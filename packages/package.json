@@ -1,0 +1,26 @@
+{
+  "name": "youloge",
+  "version": "0.0.1",
+  "description": "the youloge-ui is tset",
+  "private": false,
+  "main": "dist/youloge.umd.js",
+  "module": "dist/youloge.es.js",
+  "style": "dist/style.css",
+  "license": "MIT",
+  "author": "Micateam",
+  "type": "module",
+  "exports": {
+    ".": {
+      "import": "dist/youloge.es.js",
+      "require": "dist/youloge.umd.js"
+    },
+    "./*": "./*"
+  }, 
+  "scripts": {
+    "build": "vite build"
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ]
+}
