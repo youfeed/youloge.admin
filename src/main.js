@@ -3,6 +3,7 @@ import router from './router';
 import Youloge from '@UI/youloge.es'
 import App from './App.vue'
 
+import '@UI/style.css'
 import './style.css'
 
 console.log(Youloge)

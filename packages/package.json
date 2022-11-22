@@ -11,8 +11,8 @@
   "type": "module",
   "exports": {
     ".": {
-      "import": "dist/youloge.es.js",
-      "require": "dist/youloge.umd.js"
+      "import": "./dist/youloge.es.js",
+      "require": "./dist/youloge.umd.js"
     },
     "./*": "./*"
   }, 

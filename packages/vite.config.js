@@ -10,7 +10,7 @@ export default defineConfig({
     outDir: "dist",
     sourcemap: false,
     lib:{
-      entry: './index.js',
+      entry: './index.js', 
       name: 'youloge',
       fileName: (format) => `youloge.${format}.js`,
       // formats: "es",
@@ -22,8 +22,8 @@ export default defineConfig({
           vue: 'Vue',
         }
       },
-      external: ['vue']
     },
+    external: ['vue']
   },
   // 开发配置
   plugins: [vue()],
