@@ -1,8 +1,8 @@
 {
   "name": "youloge.admin",
   "description": "开发者后台(Youloge)",
-  "private": true,
-  "version": "0.0.0",
+  "private": false,
+  "version": "0.0.1",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -11,12 +11,15 @@
   },
   "dependencies": {
     "pinia": "^2.1.7",
+    "tdesign-vue-next": "^1.7.0",
     "vue": "^3.3.4",
     "vue-router": "^4.2.5"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^4.2.3",
     "sass": "^1.69.5",
+    "unplugin-auto-import": "^0.17.1",
+    "unplugin-vue-components": "^0.25.2",
     "vite": "^4.4.5"
   }
 }

@@ -3,39 +3,42 @@
 * 顶级公开
 * 二级私有
 */
+import {useAuth} from '@/utils'
 import { createRouter, createWebHistory } from 'vue-router'
 import Layout from '@/layout/index.vue'
-const routes = [{
-  path: '/',
-  name: 'Youloge.Admin',
-  component: Layout,
-  children:[]
-}];
-const whitelist = ['Redirect', 'login', 'NoFind', 'Root'];
+const routes = [
+  {
+    path: '/',
+    name: 'Youloge.Admin',
+    component: Layout,
+    children:[]
+  },{
+    path: '/:pathMatch(.*)',
+    redirect: '/404',
+  }
+];
+// 白名单路由
+const whitelist = ['login', '404'];
 const modules = import.meta.glob(['../views/**/**.vue']);
 Object.entries(modules).forEach(([path, module]) => {
   let name = path.split("../views/").join("").split(".vue").join(""),[layout] = routes;
   const route = {
     path: `/${name}`,
-    // name: path.replace(/^\.\//, '').replace(/\.vue$/, ''),
+    name: name,
     component: module,
   };
   whitelist.includes(name) ? routes.push(route) : layout.children.push(route)
-  // layout.children.push(route) 
-  // name.includes('/') ? 
-  // routes.push(route);
 })
 console.log(modules,routes)
-// routes
+// router routes
 const router = createRouter({
   history:createWebHistory(),
   strict:true,
   routes:routes,
   scrollBehavior:()=>({left:0,top:0})
 })
-
+// export const
 export const resetRouter = (app) => {
-  const resetWhiteNameList = ['Redirect', 'Login', 'NoFind', 'Root']
   router.beforeEach((to, from, next) => {
     if (to.meta.title) {
       document.title = to.meta.title
@@ -44,6 +47,9 @@ export const resetRouter = (app) => {
   })
 }
 export const setupRouter = (app) => {
+  router.beforeEach((to, from, next) => {
+    whitelist.includes(to.name) || useAuth() ? next() : next({ name: 'login' });
+  })
   app.use(router)
 }
 export default router
