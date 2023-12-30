@@ -2,12 +2,13 @@
   "name": "youloge.admin",
   "description": "开发者后台(Youloge)",
   "private": false,
-  "version": "0.0.1",
+  "version": "0.0.2",
   "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "publish": "git add . && git commit -m 'update' && git push"
   },
   "dependencies": {
     "pinia": "^2.1.7",

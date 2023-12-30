@@ -1,10 +1,11 @@
 <template>
-  <!-- <t-space direction="vertical"> -->
+  <t-space direction="vertical">
     <t-row justify="center" align="center" :gutter="16" class="gradient">
       <t-col :span="12">
         <div class="login">
           <div>开发者登录-如何成为开发者</div>
-          <iframe src="https://open.youloge.com/login#hello"></iframe>
+          <iframe :src="`https://open.youloge.com/login${hash}`" v-if="show"></iframe>
+          <!-- <iframe :src="`http://localhost:5174/login.html${hash}`"></iframe> -->
         </div>
       </t-col>
       <t-col :span="12">
@@ -15,41 +16,51 @@
         <div>UKEY:{{ config.UKEY }}</div>
       </t-col>
     </t-row>
-  <!-- </t-space> -->
+  </t-space>
 </template>
 
 <script setup>
 defineOptions({ name: 'you-login',inheritAttrs:false });
-import {useConfig} from '@/utils'
-import { onMounted, reactive, toRefs,markRaw } from 'vue';
+import {useConfig,setStorage} from '@/utils'
+import { onMounted, reactive, toRefs } from 'vue';
+import { useRouter, useRoute } from 'vue-router'
+const router = useRouter(),route = useRoute();
+console.log(router,route)
 const state = reactive({
+  show:false,
+  hash:`#${Math.random().toString(36)}`,
   form:null
 })
 const config = reactive(useConfig())
-const formData = reactive({
-  account: '',
-  password: ''
-})
 
 onMounted(()=>{
+  let {hash} = state;state.show = true
   // console.log(config)
-  // window.addEventListener('message',({origin,source,data})=>{
-  //   let {method} = data['#hello'];
-  //   if(method === 'ready'){
-  //     let params = {ukey:config.UKEY,close:false};
-  //     source.postMessage({['#hello']:{method:'init',params:params},origin})
-  //     console.log(params)
-  //   }
-  // })
+  window.addEventListener('message',({origin,source,data})=>{
+    let {method,params} = data[hash] || {};
+    if(method){
+      let action = {
+        'ready':()=>{
+          let init = {ukey:config.UKEY,close:false};
+          source.postMessage({[hash]:{method:'init',params:init}},origin)
+        },
+        'success':()=>{
+          let {signature,expire} = params
+          setStorage(params);
+          router.replace({ path: '/' })
+          console.log('success',params)
+        }
+      };action[method] ? action[method]() : null
+    }
+  })
 })
 
-const {form} = toRefs(state)
+const {show,form,hash} = toRefs(state)
 </script>
 
 <style lang="scss">
 .login{
-  margin-top: 20px;
-  // border: 1px solid #e9e9e9;
+  margin: 40px auto;
   border-radius: 4px;
   padding: 20px;
   height: 400px;
@@ -60,7 +71,7 @@ const {form} = toRefs(state)
     width: 100%;
   }
 }
-body {
+bodys {
     /* 设置容器尺寸 - 原理1 */
     // width: 400px;
     // height: 400px;

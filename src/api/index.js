@@ -4,6 +4,7 @@
 */
 import {useConfig,useStorage}  from '@/utils'
 import { NotifyPlugin,LoadingPlugin } from 'tdesign-vue-next';
+// import { useRouter, useRoute } from 'vue-router'
 export function useFetch(route,method,params={},permission=false){
   const {UKEY,APIURL,WWWURL} = useConfig();
   const {signature} = useStorage();
@@ -23,10 +24,11 @@ export function useFetch(route,method,params={},permission=false){
         },
         // 签名过期
         403:()=>{
-          resolve(data)
+          reject(msg)
         },
-        404:()=>{
-          resolve(data)
+        405:()=>{
+          NotifyPlugin.warning({ title: '请求错误',content: '未知请求方法' });
+          reject(msg)
         },
         500:()=>{
           resolve(data)

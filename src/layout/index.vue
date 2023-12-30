@@ -5,10 +5,9 @@
         <template #logo>
           <img width="136" class="logo" src="https://www.tencent.com/img/index/menu_logo_hover.png" alt="logo" />
         </template>
-        <t-menu-item value="item1"> 已选内容 </t-menu-item>
-        <t-menu-item value="item2"> 菜单内容一 </t-menu-item>
-        <t-menu-item value="item3"> 菜单内容二 </t-menu-item>
-        <t-menu-item value="item4" :disabled="true"> 菜单内容三 </t-menu-item>
+        <template v-for="item in menu" :key="item.id">
+          <t-menu-item value="item1" @click="menuClick(item)"> <t-icon :name="item.icon" />{{item.title}} </t-menu-item>
+        </template>
         <template #operations>
           <a href="javascript:;"><t-icon class="t-menu__operations-icon" name="search" /></a>
           <a href="javascript:;"><t-icon class="t-menu__operations-icon" name="notification-filled" /></a>
@@ -18,61 +17,20 @@
     </t-header>
     <t-layout>
       <t-aside style="border-top: 1px solid var(--component-border)">
-        <t-menu theme="light" value="dashboard" collapsed expandMutex style="margin-right: 50px" height="100%">
-          <t-menu-item value="dashboard">
-            <template #icon>
-              <t-icon name="dashboard" />
-            </template>
-            仪表盘
-          </t-menu-item>
-          <t-menu-item value="resource">
-            <template #icon>
-              <t-icon name="server" />
-            </template>
-            资源列表
-          </t-menu-item>
-          <t-menu-item value="root">
-            <template #icon>
-              <t-icon name="root-list" />
-            </template>
-            根目录
-          </t-menu-item>
-          <t-menu-item value="control-platform">
-            <template #icon>
-              <t-icon name="control-platform" />
-            </template>
-            调度平台
-          </t-menu-item>
-          <t-menu-item value="precise-monitor">
-            <template #icon>
-              <t-icon name="precise-monitor" />
-            </template>
-            调度平台
-          </t-menu-item>
-          <t-menu-item value="mail">
-            <template #icon>
-              <t-icon name="mail" />
-            </template>
-            消息区
-          </t-menu-item>
-          <t-menu-item value="user-circle">
-            <template #icon>
-              <t-icon name="user-circle" />
-            </template>
-            个人中心
-          </t-menu-item>
-          <t-menu-item value="play-circle">
-            <template #icon>
-              <t-icon name="play-circle" />
-            </template>
-            视频区
-          </t-menu-item>
-          <t-menu-item value="edit1">
-            <template #icon>
-              <t-icon name="edit-1" />
-            </template>
-            资源编辑
-          </t-menu-item>
+        <t-menu theme="light" :value="MenuValue" :collapsed="collapsed" @onChange="onChange">
+          <template  v-for="item in aside" :key="item.id">
+            <t-menu-item :value="item.path" :to="item.path">
+              <template #icon>
+                <t-icon :name="item.icon" />
+              </template>
+              {{item.name}}
+            </t-menu-item>
+          </template>
+          <template #operations>
+            <t-button class="t-demo-collapse-btn" variant="text" shape="square" @click="changeCollapsed">
+              <template #icon><t-icon :name="iconName" /></template>
+            </t-button>
+          </template>
         </t-menu>
       </t-aside>
       <t-layout>
@@ -85,20 +43,33 @@
   </t-layout>
 </template>
 <script setup>
-import { onMounted } from "vue";
+import { onMounted,computed , toRefs,reactive,ref } from "vue";
 import { useFetch } from "@/api/index.js"
 defineOptions({name:'you-layout'});
-
+const state = reactive({
+  menu:[],
+  aside:[],
+  MenuValue:''
+})
 onMounted(()=>{
   console.log('onMounted');
-  useFetch('config','menu',{},true).then(res=>{
-    console.log(res);
+  useFetch('config','menu',{},true).then(data=>{
+    state.menu = data
+    console.log(data);
   })
 })
-// import YouHeader from './header.vue'
-// import YouAside from './aside.vue'
-// import YouMain from './main.vue'
-// import YouFooter from './footer.vue'
+const collapsed = ref(false);
+
+const iconName = computed(() => (collapsed.value ? 'chevron-right' : 'chevron-left'));
+
+const changeCollapsed = () => {
+  collapsed.value = !collapsed.value;
+};
+const menuClick = (item)=>{
+  state.aside = item.list
+  console.log(item);
+}
+const { menu,aside,MenuValue } = toRefs(state);
 </script>
 
 <style>

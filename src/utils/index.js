@@ -4,13 +4,18 @@ export const isDark = () => {
 export const useConfig = ()=>{
   return JSON.parse(sessionStorage.getItem('config') || '{}')
 }
-export const setConfig = (key,item)=>{
+export const setConfig = (item)=>{
   let config = useConfig()
-  config[key] = item;
+  Object.assign(config,item);
   return sessionStorage.setItem('config',JSON.stringify(config))
 }
 export const useStorage = ()=>{
   return JSON.parse(localStorage.getItem('youloge') || '{}')
+}
+export const setStorage = (item)=>{
+  let storage = useStorage();
+  Object.assign(storage,item);
+  return localStorage.setItem('youloge',JSON.stringify(storage));
 }
 
 export const useAuth = ()=>{
