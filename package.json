@@ -8,7 +8,7 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "publish": "git add . && git commit -m 'update' && git push github main"
+    "publish": "git add . && git commit -m 'update' && git push origin main"
   },
   "dependencies": {
     "pinia": "^2.1.7",
