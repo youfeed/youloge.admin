@@ -1,14 +1,14 @@
 <template>
-  <div>review</div>
+  <div>审核文件：</div>
 </template>
 
-<script>
-export default {
-  meta:{
-    title: 'title',
-    icon:'icon'
-  }
-}
+<script setup>
+import { onMounted } from "vue"
+onMounted(()=>{
+  apiFetch('drive','moderated', {}).then(data=>{
+    console.log(data)
+  })
+})
 </script>
 
 <style>

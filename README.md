@@ -1,7 +1,40 @@
-# Vue 3 + Vite
+# Youloge.Console
 
-This template should help get you started developing with Vue 3 in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
+开放平台控制台 Console
 
-## Recommended IDE Setup
+## 自行编译配置修改`\src\main.js`
 
-- [VS Code](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
+```js
+const config = {
+  APIKEY:'8rR/lr0ugwqzUvB....2o25WQ', // 开发者KEY
+  APIURL:"https://api.youloge.com", // API地址
+  VIPURL:"https://vip.youloge.com", // VIP地址
+  WWWURL:"https://www.youloge.com", // 开发者接口地址
+}
+```
+
+
+
+##### 目录结构(无UI依赖)
+
+```
+├── src
+│   ├── main.js // 入口文件
+│   ├── App.vue // 入口模板
+│   ├── assets
+│   │   ├── css
+│   │   │   ├── index.css
+│   │   │   └── reset.css
+│   │   └── js
+│   │       └── index.js
+│   ├── components // 组件
+│   │   ├── App.vue
+│   │   ├── ....vue
+│   ├── composables // 组合式API
+│   │   ├── useFetch.vue
+│   │   ├── ....vue
+│   ├── directives // 指令
+│   │   ├── vCopy.vue
+│   │   ├── ....vue
+│   ├── utils // 工具
+│   │   ├── index.js

@@ -3,8 +3,7 @@
 * 顶级公开
 * 二级私有
 */
-import {useAuth} from '@/utils'
-import { createRouter, createWebHistory } from 'vue-router'
+import { createWebHistory, createRouter } from 'vue-router'
 import Layout from '@/layout/index.vue'
 const routes = [
   {
@@ -29,7 +28,7 @@ Object.entries(modules).forEach(([path, module]) => {
   };
   whitelist.includes(name) ? routes.push(route) : layout.children.push(route)
 })
-console.log(modules,routes)
+// console.log(modules,routes)
 // router routes
 const router = createRouter({
   history:createWebHistory(),
@@ -52,4 +51,4 @@ export const setupRouter = (app) => {
   })
   app.use(router)
 }
-export default router
+export default router;

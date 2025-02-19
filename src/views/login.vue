@@ -13,7 +13,7 @@
         <div>APIURL:{{ config.APIURL }}</div>
         <div>VIPURL:{{ config.VIPURL }}</div>
         <div>WWWURL:{{ config.WWWURL }}</div>
-        <div>UKEY:{{ config.UKEY }}</div>
+        <div>APIKEY:{{ config.APIKEY }}</div>
       </t-col>
     </t-row>
   </t-space>
@@ -21,7 +21,6 @@
 
 <script setup>
 defineOptions({ name: 'you-login',inheritAttrs:false });
-import {useConfig,setStorage} from '@/utils'
 import { onMounted, reactive, toRefs } from 'vue';
 import { useRouter, useRoute } from 'vue-router'
 const router = useRouter(),route = useRoute();
@@ -47,7 +46,7 @@ onMounted(()=>{
         'success':()=>{
           let {signature,expire} = params
           setStorage(params);
-          router.replace({ path: '/' })
+          router.replace({ path: '/index' })
           console.log('success',params)
         }
       };action[method] ? action[method]() : null

@@ -1,23 +1,31 @@
 <template>
   <t-layout>
     <t-header>
-      <t-head-menu value="item1" height="120px">
+      <t-head-menu value="item0" height="120px">
         <template #logo>
-          <img width="136" class="logo" src="https://www.tencent.com/img/index/menu_logo_hover.png" alt="logo" />
+          <div  @click="changeCollapsed">
+            <t-button class="t-demo-collapse-btn" variant="text" shape="square">
+              <template #icon><t-icon name="menu-fold" /></template>
+            </t-button>
+            Youloge·开发者
+            <!-- <img width="136" class="logo" src="https://www.tencent.com/img/index/menu_logo_hover.png" alt="logo" /> -->
+          </div>
         </template>
-        <template v-for="item in menu" :key="item.id">
-          <t-menu-item value="item1" @click="menuClick(item)"> <t-icon :name="item.icon" />{{item.title}} </t-menu-item>
+        <template v-for="(item,index) in left" :key="index">
+          <t-menu-item :value="`item${index}`" @click="menuClick(item)"> <t-icon :name="item.icon" />{{item.name}} </t-menu-item>
         </template>
         <template #operations>
-          <a href="javascript:;"><t-icon class="t-menu__operations-icon" name="search" /></a>
-          <a href="javascript:;"><t-icon class="t-menu__operations-icon" name="notification-filled" /></a>
-          <a href="javascript:;"><t-icon class="t-menu__operations-icon" name="home" /></a>
+          <template v-for="(item,index) in right" :key="index">
+            <t-button variant="text" shape="square"  @click="menuClick(item)">
+              <template #icon><t-icon :name="item.icon" /></template>
+            </t-button>
+          </template>
         </template>
       </t-head-menu>
     </t-header>
     <t-layout>
       <t-aside style="border-top: 1px solid var(--component-border)">
-        <t-menu theme="light" :value="MenuValue" :collapsed="collapsed" @onChange="onChange">
+        <t-menu theme="light" :value="state.active" :collapsed="collapsed" @onChange="onChange">
           <template  v-for="item in aside" :key="item.id">
             <t-menu-item :value="item.path" :to="item.path">
               <template #icon>
@@ -26,15 +34,10 @@
               {{item.name}}
             </t-menu-item>
           </template>
-          <template #operations>
-            <t-button class="t-demo-collapse-btn" variant="text" shape="square" @click="changeCollapsed">
-              <template #icon><t-icon :name="iconName" /></template>
-            </t-button>
-          </template>
         </t-menu>
       </t-aside>
       <t-layout>
-        <t-content>
+        <t-content style="padding: 10px;">
           <div> <RouterView></RouterView></div>
         </t-content>
         <t-footer>Copyright @ 2019-{{ new Date().getFullYear() }} Tencent. All Rights Reserved</t-footer>
@@ -44,32 +47,45 @@
 </template>
 <script setup>
 import { onMounted,computed , toRefs,reactive,ref } from "vue";
-import { useFetch } from "@/api/index.js"
+import menuConfig from "@/config/menu.js"
 defineOptions({name:'you-layout'});
 const state = reactive({
-  menu:[],
+  left:[],
+  right:[],
+  menu:0,
   aside:[],
   MenuValue:''
 })
 onMounted(()=>{
-  console.log('onMounted');
-  useFetch('config','menu',{},true).then(data=>{
-    state.menu = data
-    console.log(data);
-  })
+  Object.assign(state,menuConfig);
+  console.log('onMounted',state);
 })
+const useMenu = computed(()=>{
+  return menuConfig.left
+})
+const useAside = computed(()=>{
+  // let {menu} = state
+  return useMenu[0].children
+})
+const menuClick = (item)=>{
+  state.aside = item.children
+  console.log('menuClick',item);
+}
+const asideClick = (index)=>{
+  state.aside = index
+}
 const collapsed = ref(false);
 
 const iconName = computed(() => (collapsed.value ? 'chevron-right' : 'chevron-left'));
 
+const onChange = ()=>{
+
+}
 const changeCollapsed = () => {
   collapsed.value = !collapsed.value;
 };
-const menuClick = (item)=>{
-  state.aside = item.list
-  console.log(item);
-}
-const { menu,aside,MenuValue } = toRefs(state);
+
+const { menu,aside,left,right } = toRefs(state);
 </script>
 
 <style>
