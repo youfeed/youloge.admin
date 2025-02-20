@@ -4,7 +4,7 @@
       <t-col :span="12">
         <div class="login">
           <div>开发者登录-如何成为开发者</div>
-          <iframe :src="`https://open.youloge.com/login${hash}`" v-if="show"></iframe>
+          <!-- <iframe :src="`https://open.youloge.com/login${hash}`" v-if="show"></iframe> -->
           <!-- <iframe :src="`http://localhost:5174/login.html${hash}`"></iframe> -->
         </div>
       </t-col>
@@ -21,8 +21,6 @@
 
 <script setup>
 defineOptions({ name: 'you-login',inheritAttrs:false });
-import { onMounted, reactive, toRefs } from 'vue';
-import { useRouter, useRoute } from 'vue-router'
 const router = useRouter(),route = useRoute();
 console.log(router,route)
 const state = reactive({
@@ -33,7 +31,9 @@ const state = reactive({
 const config = reactive(useConfig())
 
 onMounted(()=>{
-  let {hash} = state;state.show = true
+  let {hash} = state;state.show = true;
+  let auth = useAuth();
+  auth || usePlus('login')
   // console.log(config)
   window.addEventListener('message',({origin,source,data})=>{
     let {method,params} = data[hash] || {};
