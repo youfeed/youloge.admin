@@ -45,7 +45,7 @@ export const resetRouter = (app) => {
     next()
   })
 }
-export const setupRouter = (app) => {
+export const setupRoute = (app) => {
   router.beforeEach((to, from, next) => {
     whitelist.includes(to.name) || useAuth() ? next() : next({ name: 'login' });
   })

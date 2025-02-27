@@ -91,6 +91,8 @@
     "watchEffect": true,
     "watchPostEffect": true,
     "watchSyncEffect": true,
-    "usePlus": true
+    "usePlus": true,
+    "useDialog": true,
+    "useLoading": true
   }
 }

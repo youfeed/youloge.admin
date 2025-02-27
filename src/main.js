@@ -1,7 +1,7 @@
 import App from './App.vue'
 import { createApp } from 'vue'
 import { setupStore } from '@plugins/store'
-import { setupRouter } from '@plugins/route'
+import { setupRoute } from '@plugins/route'
 import { setupTDesign } from '@plugins/setupTDesign'
 // 配置文件 必须写在sessionStorage中
 const config = {
@@ -11,10 +11,10 @@ const config = {
   WWWURL:"https://www.youloge.com",
 }
 sessionStorage.setItem('config',JSON.stringify(config))
-// 
-const setup = async()=>{
+// 配置文件 必须写在sessionStorage中
+const setup = async ()=>{
   const app = createApp(App)
-  setupRouter(app)
+  setupRoute(app)
   setupStore(app)
   setupTDesign(app)
   app.mount('#app')

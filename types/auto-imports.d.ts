@@ -70,8 +70,10 @@ declare global {
   const useConfig: typeof import('../src/composables/useConfig.js')['useConfig']
   const useCssModule: typeof import('vue')['useCssModule']
   const useCssVars: typeof import('vue')['useCssVars']
+  const useDialog: typeof import('../src/composables/useDialog.js')['default']
   const useId: typeof import('vue')['useId']
   const useLink: typeof import('vue-router')['useLink']
+  const useLoading: typeof import('../src/composables/useLoading.js')['useLoading']
   const useModel: typeof import('vue')['useModel']
   const usePlus: typeof import('../src/composables/usePlus.js')['default']
   const useRoute: typeof import('vue-router')['useRoute']
@@ -160,8 +162,10 @@ declare module 'vue' {
     readonly useConfig: UnwrapRef<typeof import('../src/composables/useConfig.js')['useConfig']>
     readonly useCssModule: UnwrapRef<typeof import('vue')['useCssModule']>
     readonly useCssVars: UnwrapRef<typeof import('vue')['useCssVars']>
+    readonly useDialog: UnwrapRef<typeof import('../src/composables/useDialog.js')['default']>
     readonly useId: UnwrapRef<typeof import('vue')['useId']>
     readonly useLink: UnwrapRef<typeof import('vue-router')['useLink']>
+    readonly useLoading: UnwrapRef<typeof import('../src/composables/useLoading.js')['useLoading']>
     readonly useModel: UnwrapRef<typeof import('vue')['useModel']>
     readonly usePlus: UnwrapRef<typeof import('../src/composables/usePlus.js')['default']>
     readonly useRoute: UnwrapRef<typeof import('vue-router')['useRoute']>

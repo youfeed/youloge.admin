@@ -2,7 +2,7 @@
   <t-space direction="vertical">
     <t-row justify="center" align="center" :gutter="16" class="gradient">
       <t-col :span="12">
-        <div class="login">
+        <div class="login dialog">
           <div>开发者登录-如何成为开发者</div>
           <!-- <iframe :src="`https://open.youloge.com/login${hash}`" v-if="show"></iframe> -->
           <!-- <iframe :src="`http://localhost:5174/login.html${hash}`"></iframe> -->
