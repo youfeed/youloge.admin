@@ -1,0 +1,10 @@
+.dialog {
+    border: 0;
+    border-radius: 5px;
+    background: transparent;
+    transition: all .3s ease-in-out;
+}
+dialog::backdrop {
+    backdrop-filter: blur(1px);
+    border: 0;
+}

@@ -1,4 +1,5 @@
 import App from './App.vue'
+import './assets/style.css'
 import { createApp } from 'vue'
 import { setupStore } from '@plugins/store'
 import { setupRoute } from '@plugins/route'
