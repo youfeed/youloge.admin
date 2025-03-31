@@ -2,7 +2,7 @@
     <div class="flex h-screen">
         <!-- 侧边栏 -->
         <div class="w-64 bg-gray-800 text-white">
-            <div className="p-4">
+            <div className="p-4"  p="y-2 x-4">
                 <h1 className="text-xl font-bold">管理后台</h1>
             </div>
             <ul className="space-y-2 p-4">
