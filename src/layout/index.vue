@@ -1,49 +1,36 @@
 <template>
-  <t-layout>
-    <t-header>
-      <t-head-menu value="item0" height="120px">
-        <template #logo>
-          <div  @click="changeCollapsed">
-            <t-button class="t-demo-collapse-btn" variant="text" shape="square">
-              <template #icon><t-icon name="menu-fold" /></template>
-            </t-button>
-            Youloge·开发者
-            <!-- <img width="136" class="logo" src="https://www.tencent.com/img/index/menu_logo_hover.png" alt="logo" /> -->
-          </div>
-        </template>
-        <template v-for="(item,index) in left" :key="index">
-          <t-menu-item :value="`item${index}`" @click="menuClick(item)"> <t-icon :name="item.icon" />{{item.name}} </t-menu-item>
-        </template>
-        <template #operations>
-          <template v-for="(item,index) in right" :key="index">
-            <t-button variant="text" shape="square"  @click="menuClick(item)">
-              <template #icon><t-icon :name="item.icon" /></template>
-            </t-button>
-          </template>
-        </template>
-      </t-head-menu>
-    </t-header>
-    <t-layout>
-      <t-aside style="border-top: 1px solid var(--component-border)">
-        <t-menu theme="light" :value="state.active" :collapsed="collapsed" @onChange="onChange">
-          <template  v-for="item in aside" :key="item.id">
-            <t-menu-item :value="item.path" :to="item.path">
-              <template #icon>
-                <t-icon :name="item.icon" />
-              </template>
-              {{item.name}}
-            </t-menu-item>
-          </template>
-        </t-menu>
-      </t-aside>
-      <t-layout>
-        <t-content style="padding: 10px;">
-          <div> <RouterView></RouterView></div>
-        </t-content>
-        <t-footer>Copyright @ 2019-{{ new Date().getFullYear() }} Tencent. All Rights Reserved</t-footer>
-      </t-layout>
-    </t-layout>
-  </t-layout>
+    <div class="flex h-screen">
+        <!-- 侧边栏 -->
+        <div class="w-64 bg-gray-800 text-white">
+            <div className="p-4">
+                <h1 className="text-xl font-bold">管理后台</h1>
+            </div>
+            <ul className="space-y-2 p-4">
+                <li><a href="#" className="block hover:bg-gray-700 p-2 rounded">仪表盘</a></li>
+                <li><a href="#" className="block hover:bg-gray-700 p-2 rounded">用户管理</a></li>
+                <li><a href="#" className="block hover:bg-gray-700 p-2 rounded">订单管理</a></li>
+                <li><a href="#" className="block hover:bg-gray-700 p-2 rounded">设置</a></li>
+            </ul>
+            <!-- 版权 -->
+            <div class="">Copyright @ 2019-{{ new Date().getFullYear() }}</div>
+        </div>
+        <!-- 主内容 -->
+        <div class="flex-1 flex flex-col">
+            <!-- 顶部导航栏 -->
+            <div className="bg-white shadow-md p-4">
+                <div className="flex justify-between items-center">
+                    <h2 className="text-xl font-bold">欢迎使用管理后台</h2>
+                    <div>
+                        <button className="bg-blue-500 text-white p-2 rounded hover:bg-blue-600">退出登录</button>
+                    </div>
+                </div>
+            </div>
+            <!-- 主要内容区域 -->
+            <div className="p-4 flex-1 overflow-y-auto">
+                <router-view></router-view>
+            </div>
+        </div>
+    </div>
 </template>
 <script setup>
 import { onMounted,computed , toRefs,reactive,ref } from "vue";

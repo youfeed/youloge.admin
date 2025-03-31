@@ -22,14 +22,13 @@ const modules = import.meta.glob(['../views/**/**.vue']);
 Object.entries(modules).forEach(([path, module]) => {
   let name = path.split("../views/").join("").split(".vue").join(""),[layout] = routes;
   const route = {
-    path: `/${name}`,
+    path: `/${name.replace(/\/?index$/, '')}`,
     name: name,
     component: module,
   };
   whitelist.includes(name) ? routes.push(route) : layout.children.push(route)
 })
-// console.log(modules,routes)
-// router routes
+console.log('routes',routes)
 const router = createRouter({
   history:createWebHistory(),
   strict:true,

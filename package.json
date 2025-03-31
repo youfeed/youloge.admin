@@ -7,14 +7,13 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview",
-    "publish": "git add . && git commit -m 'update' && git push origin main"
+    "preview": "vite preview"
   },
   "dependencies": {
     "pinia": "^2.1.7",
-    "tdesign-vue-next": "^1.7.0",
     "vue": "^3.3.4",
-    "vue-router": "^4.5.0"
+    "vue-router": "^4.5.0",
+    "youloge.plus": "^2.0.4"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^4.2.3",

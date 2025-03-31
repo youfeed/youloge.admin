@@ -167,7 +167,6 @@ declare module 'vue' {
     readonly useLink: UnwrapRef<typeof import('vue-router')['useLink']>
     readonly useLoading: UnwrapRef<typeof import('../src/composables/useLoading.js')['useLoading']>
     readonly useModel: UnwrapRef<typeof import('vue')['useModel']>
-    readonly usePlus: UnwrapRef<typeof import('../src/composables/usePlus.js')['default']>
     readonly useRoute: UnwrapRef<typeof import('vue-router')['useRoute']>
     readonly useRouter: UnwrapRef<typeof import('vue-router')['useRouter']>
     readonly useSlots: UnwrapRef<typeof import('vue')['useSlots']>

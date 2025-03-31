@@ -46,7 +46,6 @@ export default defineConfig({
         manualChunks: {
           vue:['vue','vue-router'],
           pinia:['pinia'],
-          tdesign:['tdesign-vue-next'],
           // tinymce:['tinymce']
         }
       }

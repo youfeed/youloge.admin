@@ -8,4 +8,4 @@
 export const useAuth = (key='profile')=>{
     let {expire,access_token} = useStorage(key);
     return access_token && expire > new Date().getTime() / 1000 >> 0;
-  }
+}
