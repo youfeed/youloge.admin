@@ -68,53 +68,65 @@ layui.define(['laytpl', 'layer'], function(exports) {
     options.headers = options.headers || {};
 
     // 是否已开启自动传递 token
-    if (request.tokenName) {
-      var sendData = typeof options.data === 'string'
-        ? JSON.parse(options.data)
-      : options.data;
+    options.headers['organization'] = layui.data(setter.tableName)['organization'] || '';
+    options.headers['authorization'] = layui.data(setter.tableName)['access_token'] || '';
+    // if (request.tokenName) {
+    //   var sendData = typeof options.data === 'string'
+    //     ? JSON.parse(options.data)
+    //   : options.data;
 
-      // token 的传参方式
-      if (request.tokenTransferMethod === 'headers') { // Headers 方式传递
-        options.headers[request.tokenName] = request.tokenName in options.headers
-          ?  options.headers[request.tokenName]
-        : (layui.data(setter.tableName)[request.tokenName] || '');
-      } else { // data 方式传递 --- 默认
-        options.data[request.tokenName] = request.tokenName in sendData
-          ?  options.data[request.tokenName]
-        : (layui.data(setter.tableName)[request.tokenName] || '');
-      }
-    }
+    //   // token 的传参方式
+    //   if (request.tokenTransferMethod === 'headers') { // Headers 方式传递
+    //     options.headers[request.tokenName] = request.tokenName in options.headers
+    //       ?  options.headers[request.tokenName]
+    //     : (layui.data(setter.tableName)[request.tokenName] || '');
+    //   } else { // data 方式传递 --- 默认
+    //     options.data[request.tokenName] = request.tokenName in sendData
+    //       ?  options.data[request.tokenName]
+    //     : (layui.data(setter.tableName)[request.tokenName] || '');
+    //   }
+    // }
 
     delete options.success;
     delete options.error;
-
+    // 状态码采用 JSONRPC格式
     return $.ajax($.extend({
-      type: 'get',
+      type: 'post',
       dataType: 'json',
       success: function(res) {
-        var statusCode = response.statusCode;
+        typeof options.done === 'function' && options.done(res);
+        let {error,result} = res
+        if(error){
+          error.code == 401 && view.exit();
+          typeof error === 'function' && error(error);
+        }
+        if(result){
+          typeof success === 'function' && success(result);
+        }
+        
+        // var statusCode = response.statusCode;
 
         //只有 response 的 code 一切正常才执行 done
-        if(res[response.statusName] == statusCode.ok) {
-          typeof options.done === 'function' && options.done(res);
-        }
+        // if(res[response.statusName] == statusCode.ok) {
+        //   typeof options.done === 'function' && options.done(res);
+        // }
 
-        //登录状态失效，清除本地 access_token，并强制跳转到登入页
-        else if(res[response.statusName] == statusCode.logout){
-          view.exit();
-        }
+        // //登录状态失效，清除本地 access_token，并强制跳转到登入页
+        // else if(res[response.statusName] == statusCode.logout){
+        //   view.exit();
+        // }
 
-        //其它异常
-        else {
-          var errorText = [
-            '<cite>Error：</cite> ' + (res[response.msgName] || '返回状态码异常')
-            ,debug()
-          ].join('');
-          view.error(errorText);
-        }
+        // //其它异常
+        // else {
+        //   var errorText = [
+        //     '<cite>Error：</cite> ' + (res[response.msgName] || '返回状态码异常')
+        //     ,debug()
+        //   ].join('');
+        //   view.error(errorText);
+        // }
 
-        //只要 http 状态码正常，无论 response 的 code 是否正常都执行 success
-        typeof success === 'function' && success(res);
+        // //只要 http 状态码正常，无论 response 的 code 是否正常都执行 success
+        // typeof success === 'function' && success(res);
       },
       error: function(e, code){
         var errorText = [

@@ -141,12 +141,12 @@ class Authorized implements MiddlewareInterface
         @['noNeedLogin'=>$noNeedLogin] = $this->needReflect($request);
         // 判断是否需要登录认证
         if(in_array($action, $noNeedLogin) == false) {
-            @['uuid'=>$serial,'expire'=>$expire] = $request->apikey;
-            @[$inner,$outer] = $onion = parseOnion($authorization,$serial,'access');
-            if($inner == null) throw new Exception('Authenticate is wrong',403);
-            if($inner['uuid'] !== $outer['uuid']) throw new Exception('Self-signature prohibited',403);
-            if($inner['expire'] < time()) throw new Exception('Authenticate is expired',401);
-            $request->author = $inner;
+            $secret = ini('APIKEY.SECRET',null);
+            if($authorization == null) throw new Exception('Authorization is Null',407);
+            $bin = safe_base64_decode($authorization);$iv = substr($bin,0,16);
+            $two = openssl_decrypt(substr($bin,16),'AES-256-CBC',substr($secret,0,32),1,$iv);
+            $one = openssl_decrypt($two,'AES-256-CBC',substr($secret,32,64),1,$iv);
+            $request->author = $one;
         }
     }
     /**
@@ -157,9 +157,10 @@ class Authorized implements MiddlewareInterface
         @['organization'=>$organization] = $request->header();
         @['noNeedRight'=>$noNeedRight] = $this->needReflect($request);
         if(in_array($action, $noNeedRight) == false){
-            @['uuid'=>$serial,'expire'=>$expire] = $request->apikey = aes256_decrypt($organization,'micateam');
-            if($serial == null) throw new Exception('Organization is Wrong',407);
-            if($expire < time()) throw new Exception('Organization is expired',407); 
+            $apikey = ini('APIKEY.APIKEY');
+            if($apikey == []) throw new Exception('Organization is Null',407);
+            if($apikey != $organization) throw new Exception('Organization is Different',407);
+            $request->apikey = $apikey;
         }
     }
     /**
@@ -184,10 +185,13 @@ class Authorized implements MiddlewareInterface
      */
     public function process(Request $request, callable $next): Response
     {
+        $path = $request->path();$method = $request->method();
         try {
-            // IP判断 
-            
-            // 根路径走标准JSONRPC 格式处理
+            // 首页跳过
+            if($path == '/' && $method == 'GET'){
+                return $next($request);
+            }
+            // 标准JSONRPC 简易JSONRPC
             return $request->path() == '/' ? $this->standardProcess($request) : $this->simplifyProcess($request); 
         } catch (\Throwable $th) {
             $error = [

@@ -18,7 +18,7 @@ layui.define(['all'], function(exports){
     pageTabs: false, // 是否开启页面选项卡功能。单页版不推荐开启
     refreshCurrPage: true, // 当跳转页面 url 与当前页 url 相同时，是否自动执行刷新
 
-    name: 'AdminUI', // 主题名称
+    name: 'Youloge', // 主题名称
     tableName: 'adminui', // 本地存储表名
     MOD_NAME: 'admin', // 模块事件名
 
@@ -27,23 +27,22 @@ layui.define(['all'], function(exports){
 
     // 自定义请求字段
     request: {
-      tokenName: 'access_token', // 接口自动传递 token 的字段名。可设置 false 不传递
-      tokenTransferMethod: 'data' // token 的传递方式（可选值: data | headers） --- v2.4.0 新增
+      tokenName: 'authorization', // 接口自动传递 token 的字段名。可设置 false 不传递
+      tokenTransferMethod: 'headers' // token 的传递方式（可选值: data | headers） --- v2.4.0 新增
     },
 
     // 自定义响应字段
     response: {
       statusName: 'code', // 数据状态的字段名称
       statusCode: {
-        ok: 0, // 数据状态一切正常的状态码
-        logout: 1001 // 登录状态失效的状态码
+        ok: 200, // 数据状态一切正常的状态码
+        logout: 401 // 登录状态失效的状态码
       },
-      msgName: 'msg', // 状态信息的字段名称
-      dataName: 'data' // 数据详情的字段名称
+      msgName: 'message', // 状态信息的字段名称
+      dataName: 'result' // 数据详情的字段名称
     },
 
     // 独立页面路由，可随意添加（无需写参数）
-    isIndPage:'/login',
     indPage: [
       '/login', // 登入页
     ],
