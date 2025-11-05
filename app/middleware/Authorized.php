@@ -1,6 +1,7 @@
 <?php
 namespace app\middleware;
 
+use Exception;
 use ReflectionClass;
 use Webman\MiddlewareInterface;
 use Webman\Http\Response;
