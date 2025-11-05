@@ -3,7 +3,7 @@
  */
 
 layui.config({
-  base: 'res/', // 静态资源所在路径
+  base: '/', // 静态资源所在路径
 }).extend({
   setter: 'config' // 将 config.js 扩展到 layui 模块
 }).define(['setter'], function(exports) {
