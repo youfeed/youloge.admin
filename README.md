@@ -16,6 +16,6 @@
 
 1. 后端为 [webman](https://www.workerman.net/webman) 速度快
 2. 前端为 [layuiAdmin](https://dev.layuion.com/themes/layuiAdmin) 商业化请尊重版权 购买授权
-
-
+3. Gitee仓库地址 [youloge.admin](https://gitee.com/jakebuda/youloge.admin) 方便网络不方便用户
+4. 官方演示网站使用的管理后台就是`youloge.admin` 但行好事 莫问前程
 
