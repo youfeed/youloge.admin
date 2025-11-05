@@ -48,7 +48,7 @@ layui.define(['laytpl', 'layer'], function(exports) {
     layer.closeAll();
 
     // 跳转到登入页
-    location.hash = '/user/login';
+    location.hash = '/login';
   };
 
   // Ajax 请求

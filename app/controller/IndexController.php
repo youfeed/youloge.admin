@@ -9,7 +9,7 @@ class IndexController
     public function index(Request $request)
     {
         static $apikey;
-        $apikey = ini('APIKEY.APIKEY','2333');
+        $apikey = ini('APIKEY.APIKEY');
         return view('index',['apikey'=>$apikey]); 
     }
 

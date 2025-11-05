@@ -6,7 +6,7 @@
 layui.define(['all'], function(exports){
   exports('setter', {
     paths: {
-      core: layui.cache.base + 'adminui/dist/', // 核心库所在目录
+      core: layui.cache.base + 'adminui/src/', // 核心库所在目录
       views: layui.cache.base + 'views/', // 业务视图所在目录
       modules: layui.cache.base + 'modules/', // 业务模块所在目录
       base: layui.cache.base // 记录静态资源所在基础目录
@@ -43,11 +43,9 @@ layui.define(['all'], function(exports){
     },
 
     // 独立页面路由，可随意添加（无需写参数）
+    isIndPage:'/login',
     indPage: [
-      '/user/login', // 登入页
-      '/user/reg', // 注册页
-      '/user/forget', // 找回密码
-      '/template/tips/test' // 独立页的一个测试 demo
+      '/login', // 登入页
     ],
 
     // 配置业务模块目录中的特殊模块
