@@ -69,7 +69,7 @@ layui.define(['laytpl', 'layer'], function(exports) {
 
     // 是否已开启自动传递 token
     options.headers['organization'] = layui.data(setter.tableName)['organization'] || '';
-    options.headers['authorization'] = layui.data(setter.tableName)['access_token'] || '';
+    options.headers['authorization'] = layui.data(setter.tableName)['authorization'] || '';
     // if (request.tokenName) {
     //   var sendData = typeof options.data === 'string'
     //     ? JSON.parse(options.data)
