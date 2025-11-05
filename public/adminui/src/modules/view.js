@@ -98,10 +98,10 @@ layui.define(['laytpl', 'layer'], function(exports) {
         let {error,result} = res
         if(error){
           error.code == 401 && view.exit();
-          typeof error === 'function' && error(error);
+          typeof error === 'function' && error(res);
         }
         if(result){
-          typeof success === 'function' && success(result);
+          typeof success === 'function' && success(res);
         }
         
         // var statusCode = response.statusCode;

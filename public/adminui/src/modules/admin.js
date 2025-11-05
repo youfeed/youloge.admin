@@ -81,7 +81,6 @@ layui.define('view', function(exports) {
       var pathURL = path.join('/')
       var dataName = layui.setter.response.dataName;
       var childrenName = 'children'; // 用于存放子菜单集合的名称
-
       // 递归
       return (function eachItems(data, itemTagName) {
         itemTagName = itemTagName || 'li'; // 菜单项标签名
