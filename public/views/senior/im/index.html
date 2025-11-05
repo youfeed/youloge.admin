@@ -1,0 +1,508 @@
+
+<title>社交聊天</title>
+
+<div class="layui-card layadmin-header">
+  <div class="layui-breadcrumb" lay-filter="breadcrumb">
+    <a lay-href="">主页</a>
+    <a><cite>高级</cite></a>
+    <a><cite>通讯系统</cite></a>
+    <a><cite>WebIM UI</cite></a>
+  </div>
+</div>
+
+<div class="layui-fluid">
+  <div class="layui-row layui-col-space15">
+    <div class="layui-col-md12">
+      <div class="layui-card">
+        <div class="layui-card-header">面板外的操作示例</div>
+        <div class="layui-card-body">
+          <div class="layui-btn-container" id="LAY-layim-demo">
+            <button class="layui-btn layui-btn-primary" data-type="chat">创建自定义聊天面板</button>
+            <br>
+            <button class="layui-btn layui-btn-primary" data-type="message">接受好友的消息</button>
+            <button class="layui-btn layui-btn-primary" data-type="messageTemp">接受临时聊天消息</button>
+            <br>
+            <button class="layui-btn layui-btn-primary" data-type="requestFriend">打开申请好友面板</button>
+            <button class="layui-btn layui-btn-primary" data-type="requestGroup">打开申请群聊面板</button>
+            <button class="layui-btn layui-btn-primary" data-type="addFriend">打开同意添加好友面板</button>
+            <br>
+            <button class="layui-btn layui-btn-primary" data-type="addGroup">增加群聊到主面板</button>
+            <button class="layui-btn layui-btn-primary" data-type="removeFriend">删除主面板好友</button>
+            <button class="layui-btn layui-btn-primary" data-type="removeGroup">删除主面板群聊</button>
+            <br>
+            <button class="layui-btn layui-btn-primary" data-type="setGray">置灰离线好友</button>
+            <button class="layui-btn layui-btn-primary" data-type="unGray">取消好友置灰</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+layui.config({
+  layimPath: layui.cache.base + 'layim/', //配置 layim.js 所在目录
+  layimResPath: layui.cache.base + 'layim/res/' //layim 资源文件所在目录
+}).use(['layim'], function(){
+  var layim = layui.layim;
+
+  // 基础配置
+  layim.config({
+    // 初始化数据，可采用 URL 接口或直接赋值两种方式
+    init: {
+      url: layui.setter.paths.base + 'json/layim/getInit.json', // 若采用 URL，则 init 可同 jQuery.ajax() 参数选项
+     // …
+    },
+    uploadImage: {
+      url: '1/2/3'
+    },
+    // 设置 iframe 页面地址
+    pageurl: {
+      // 消息盒子页面地址。若不开启，剔除该项即可
+      msgbox: layui.cache.layimResPath + 'html/msgbox.html',
+      // 发现页面地址。若不开启，剔除该项即可
+      find: layui.cache.layimResPath + 'html/find.html',
+      // 通过函数设置聊天记录页面地址。若不开启，剔除该项即可
+      chatlog: function(data) {
+        var receiver = data.receiver; // 当前聊天对象
+        var url = layui.cache.layimResPath + 'html/chatlog.html';
+        return url + '?type='+ receiver.type +'&id='+ receiver.id;
+      }
+    },
+    // theme: 'dark', // 默认强制深色主题风格
+    // 更多选项见 layim 文档
+    // …
+  });
+
+  // 扩展聊天工具栏
+  layim.extendChatTools([
+    {
+      name: 'image',
+      title: '上传图片',
+      icon: 'layui-icon-picture-fine',
+      onClick: 'file',  // 此处的 file 为内置工具
+      ajax: { // 设置上传图片接口，同 jQuery.ajax() 参数选项
+        url: '',
+      }
+    },
+    {
+      name: 'file',
+      title: '上传文件',
+      icon: 'layui-icon-layim-uploadfile',
+      onClick: 'file',
+      ajax: { // 设置上传图片接口，同 jQuery.ajax() 参数选项
+        url: '',
+      }
+    },
+    {
+      name: 'video',
+      title: '插入视频 URL',
+      icon: 'layui-icon-video',
+      onClick: 'remoteMedia'  // 此处的 remoteMedia 为内置工具
+    },
+    {
+      name: 'audio',
+      title: '语音消息',
+      icon: 'layui-icon-mike',
+      onClick: function(obj) {
+        layer.msg('2 秒后模拟发送语音消息', {
+          time: 2000
+        }, function() {
+          var text = '!audio(URL)'; // 音频消息特定格式 | 视频格式：!video(URL)
+          layim.sendMessage(text); // 发送消息
+        });
+      }
+    },
+    {
+      name: 'code',
+      title: '插入代码',
+      icon: 'layui-icon-fonts-code',
+      onClick: function(obj) { // 自定义事件操作
+        layer.prompt({
+          title: '插入代码',
+          formType: 2
+        }, function(text, index){
+          layer.close(index);
+          text = ['```', text, '```'].join('\n'); // 拼接成默认内容解析器支持的 code 结构
+          obj.insert(text); // 将文本插入到编辑器
+        });
+      }
+    },
+    {
+      name: 'shortcut',
+      title: '快捷语',
+      icon: 'layui-icon-list',
+      onClick: function(obj) {
+        layui.dropdown.render({
+          elem: obj.elem,
+          data: [
+            {title: '写一篇 50 字左右的正能量小说'},
+            {title: 'Layui table 的详细用法'},
+            {title: '1+1=?'},
+            {title: '翻译：我想通了'},
+            {title: '[link text](https://bing.com)'},
+            {title: '![starrysky](https://unpkg.com/outeres@0.1.3/demo/carousel/720x360-5.jpg)'},
+            {title: '!file[starrysky.jpg](https://unpkg.com/outeres@0.1.3/demo/carousel/720x360-5.jpg)'},
+          ],
+          show: true,
+          click: function(data) {
+            obj.insert(data.title); // 将文本插入到编辑器
+          }
+        })
+      }
+    }
+  ]);
+
+  /*
+  // 异步获取服务端聊天记录并返回。若不设置，则默认读取本地记录
+  layim.callback('chatlog', obj => {
+    // console.log(obj); // 当前聊天的相关信息
+    return new Promise((resolve, reject) => {
+      // 纯静态模拟获取聊天记录数据，实际使用时可将下述 setTimeout 换成真实接口
+      setTimeout(function() {
+        // 通过接口获得的数据
+        let data = [{
+          "username": "我",
+          "id": "100000",
+          "avatar": "",
+          "timestamp": 1480897882000,
+          "content": "我方模拟记录 111",
+          "user": true
+        }, {
+          "username": "test123",
+          "id": 108101,
+          "avatar": "",
+          "timestamp": 1480897892000,
+          "content": "对方模拟记录 111"
+        }, {
+          "username": "test123",
+          "id": 108101,
+          "avatar": "",
+          "timestamp": 1480897908000,
+          "content": "注意：这只是一个静态的聊天记录示例，实际使用时，可根据 chatlog 回调函数返回的参数请求对应聊天的聊天记录。"
+        }];
+        // 将获得的数据返回给 Promise resolve
+        resolve(data);
+      }, 500);
+    });
+  });
+ */
+
+
+  // 事件 - 在线状态的切换事件
+  layim.on('online', function(obj){
+    console.log(obj);
+  });
+
+  // 事件 - 签名修改
+  layim.on('sign', function(obj){
+    console.log(obj);
+  });
+
+  // 事件 - layim建立就绪
+  layim.on('ready', function(cache) {
+    // console.log(cache);
+    layim.setMsgboxCount(5); // 模拟消息盒子的新消息数量。实际使用时，一般是动态获得
+
+    // 向主面板添加群组
+    layim.addContacts({
+      type: 'group',
+      avatar: "",
+      groupname: '前端开发',
+      id: "12333333",
+      members: 0
+    });
+
+    // 向主面板添加好友（如果检测到该 socket）
+    layim.addContacts({
+      type: 'friend',
+      avatar: layim.cache().options.defaultAvatar, // 这里赋值默认头像，实际使用时请改成正式头像地址
+      username: '测试222',
+      gid: 2,
+      id: "1233333312121212",
+      sign: "签名信息"
+    });
+
+    // 模拟接受消息
+    // 实际使用时可将下述 setTimeout 换成 WebSocket
+    setTimeout(function(){
+      // 好友的消息
+      layim.getMessage({
+        username: "测试1",
+        avatar: "",
+        id: "100001",
+        type: "friend",
+        mid: Math.random()*100000|0, // 模拟消息 id，会赋值在 li 的 data-mid 上，以便完成一些消息的操作（如撤回），可不填
+        content: "这是模拟接受的一段测试消息。标记："+ new Date().getTime()
+      });
+    }, 1500);
+  });
+
+  // 事件 - 发送消息
+  layim.on('sendMessage', function(data) {
+    var user = data.user; // 我
+    var receiver = data.receiver; // 对方
+
+    // 普通聊天模式
+    if (receiver.type === 'friend') {
+      layim.setChatStatus('<span style="color:#FF5722;">对方正在输入…</span>');
+    }
+
+    // 演示自动回复
+    setTimeout(function() {
+      // 自动回复文本
+      var autoReplay = [
+        '模拟消息 1',
+        '模拟消息 2',
+        '模拟消息 3',
+        '模拟消息 4',
+        '模拟消息 5',
+        '模拟消息 6',
+        '模拟消息 7',
+        '模拟消息 8',
+        '模拟消息 9'
+      ];
+      var obj = {};
+      if (receiver.type === 'group') {
+        obj = {
+          username: '模拟群员 ' +(Math.random()*100|0),
+          avatar: layim.cache().options.defaultAvatar, // 这里赋值默认头像，实际使用时请改成正式头像地址
+          id: receiver.id,
+          type: receiver.type,
+          content: autoReplay[Math.random()*9|0]
+        }
+      } else {
+        obj = {
+          username: receiver.username,
+          avatar: receiver.avatar,
+          id: receiver.id,
+          type: receiver.type,
+          content: autoReplay[Math.random()*9|0]
+        };
+        layim.setChatStatus('<span style="color:#FF5722;">在线</span>');
+      }
+      layim.getMessage(obj);
+    }, 1000);
+  });
+
+  // 事件 - 查看群员
+  layim.on('viewMmembers', function(data) {
+    var receiver = data.receiver; // 当前聊天对象
+
+    // 请求群员接口，此处为静态模拟数据
+    data.ajax({
+      url: './json/getMembers.json', // 实际使用时应换成真实接口
+      data: {
+        id: receiver.id
+      },
+      success: function(res) {
+        data.render(res.data); // 渲染群员列表
+      }
+    });
+  });
+
+  // 事件 - 聊天窗口的切换
+  layim.on('chatChange', function(res){
+    var type = res.data.type;
+    console.log(res)
+    if(type === 'friend'){
+      // 模拟标注好友状态
+      // layim.setChatStatus('<span style="color:#FF5722;">在线</span>');
+    } else if(type === 'group'){
+      //模拟系统消息
+      layim.getMessage({
+        system: true,
+        id: res.data.id,
+        type: "group",
+        content: '模拟群员'+(Math.random()*100|0) + '加入群聊',
+        saveLocalChatlog: false // 不保存该消息到本地聊天记录
+      });
+    }
+  });
+
+  // 事件 - 更换背景图
+  layim.on('backgroundImage', function(obj){
+    console.log(obj)
+  });
+
+  // 面板外的操作示例事件
+  layui.use('util', function(util){
+    util.on('data-type', {
+      chat: function() {
+        // 自定义聊天
+        layim.chat({
+          username: '小测试',
+          type: 'friend',
+          avatar: '',
+          id: 1008612
+        });
+        layer.msg('即：聊天对象不必非要在右下角主面板中');
+      },
+      message: function() {
+        // 制造好友消息
+        layim.getMessage({
+          username: "测试1",
+          avatar: "//unpkg.com/outeres/demo/avatar/0.png",
+          id: "100001",
+          type: "friend",
+          content: "这是一条测试内容。演示标记："+ new Date().getTime(),
+          timestamp: new Date().getTime()
+        });
+      },
+      messageTemp: function() {
+        // 接受临时聊天消息
+        layim.getMessage({
+          username: "测试X",
+          avatar: "//unpkg.com/outeres/demo/avatar/0.png",
+          id: "198909151014",
+          type: "friend",
+          content: "临时："+ new Date().getTime()
+        });
+      },
+      requestFriend: function() {
+        // 实际使用时数据由动态获得
+        layim.openRequestContactsPanel({
+          type: 'friend',
+          username: '测试Y',
+          avatar: '//unpkg.com/outeres/demo/avatar/0.png',
+          onConfirm: function(obj) {
+            console.log(obj);
+
+            layer.msg('好友申请已发送，请等待对方确认', {
+              icon: 1,
+              shade: 0.5
+            }, function(){
+              layer.close(obj.index);
+            });
+
+            // 此处可发送通知对方的接口
+            // …
+          }
+        });
+      },
+      requestGroup: function() {
+        layim.openRequestContactsPanel({
+          type: 'group',
+          username: '测试群组1',
+          avatar: '//unpkg.com/outeres/demo/avatar/0.png',
+          onConfirm: function(obj) {
+            console.log(obj);
+
+            layer.msg('申请已发送，请等待管理员确认', {
+              icon: 1,
+              shade: 0.5
+            }, function(){
+              layer.close(obj.index);
+            });
+
+            // 此处可发送通知对方的接口
+            // …
+          }
+        });
+      },
+      addFriend: function() {
+        var user = {
+          type: 'friend',
+          id: 1234560,
+          username: '测试A', // 好友昵称，若申请加群，参数为：groupname
+          avatar: '//unpkg.com/outeres/demo/avatar/0.png', // 头像
+          sign: '测试内容'
+        }
+        layim.openAddFriendPanel({
+          type: user.type,
+          username: user.username,
+          avatar: user.avatar,
+          group: layim.cache().friend, // 获取好友列表数据
+          onConfirm: function(obj) {
+            console.log(obj);
+
+            // 此处可发送通知对方已经同意添加好友的接口
+            // …
+
+            // 同意后，将好友追加到主面板
+            layim.addContacts({
+              type: user.type,
+              username: user.username,
+              avatar: user.avatar,
+              gid: obj.gid, // 所在的分组 id
+              id: user.id, // 好友 ID
+              sign: user.sign, // 好友签名
+            });
+
+            layer.close(obj.index);
+          }
+        });
+      },
+      addGroup: function() {
+        layer.msg('已成功把[测试群组33]添加到群组里', {
+          icon: 1
+        });
+        // 增加一个群聊到主面板
+        layim.addContacts({
+          type: 'group',
+          avatar: "//unpkg.com/outeres/demo/avatar/0.png",
+          groupname: '测试群组33',
+          id: "12333333",
+          members: 0
+        });
+      },
+      removeFriend: function() {
+        layer.msg('已成功删除[测试2]', {
+          icon: 1
+        });
+        // 从主面板删除一个好友
+        layim.removeContacts({
+          id: 100001222,
+          type: 'friend'
+        });
+      },
+      removeGroup: function() {
+        layer.msg('已成功删除[测试群组33]', {
+          icon: 1
+        });
+        // 从主面板删除一个群组
+        layim.removeContacts({
+          id: 12333333,
+          type: 'group'
+        });
+      },
+      // 置灰离线好友
+      setGray: function() {
+        layim.setFriendStatus(168168, 'offline');
+
+        layer.msg('已成功将好友[测试4]置灰', {
+          icon: 1
+        });
+      },
+      // 取消好友置灰
+      unGray: function() {
+        layim.setFriendStatus(168168, 'online');
+
+        layer.msg('成功取消好友[测试4]置灰状态', {
+          icon: 1
+        });
+      },
+      // 弹出 WAP 版
+      mobile: function() {
+        var device = layui.device();
+        var mobileHome = 'mobile.html';
+        if(device.android || device.ios){
+          return location.href = mobileHome;
+        }
+        var index = layer.open({
+          type: 2,
+          title: 'WAP 版演示',
+          content: mobileHome,
+          area: ['375px', '667px'],
+          shadeClose: true,
+          scrollbar: false,
+          shade: 0.8,
+          end: function() {
+            layer.close(index + 2);
+          }
+        });
+      }
+    });
+  });
+});
+</script>
