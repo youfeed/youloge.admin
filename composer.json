@@ -26,7 +26,12 @@
   "require": {
     "php": ">=8.1",
     "workerman/webman-framework": "^2.1",
-    "monolog/monolog": "^2.0"
+    "monolog/monolog": "^2.0",
+    "youloge/ini": "^1.3",
+    "youloge/webman.validate": "^1.4",
+    "webman/database": "^2.1",
+    "illuminate/pagination": "^10.49",
+    "revolt/event-loop": "^1.0"
   },
   "suggest": {
     "ext-event": "For better performance. "
