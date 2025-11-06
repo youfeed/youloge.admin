@@ -20,24 +20,36 @@ class ConfigController
                 "url"=> "/"
             ],[
                 "name"=>"home",
-                "title"=>"新闻资讯",
+                "title"=>"审核管理",
                 "icon"=>"layui-icon-home",
                 "children"=>[
                     [
-                        "title"=>"新闻列表",
-                        "url"=>"/article/list"
-                    ],
-                    [
                         "title"=>"新闻审核",
-                        "url"=>"/article/review"
-                    ],
-                    [
-                        "title"=>"审核日志",
+                        "url"=>"/article/list"
+                    ],[
+                        "title"=>"云盘审核",
+                        "url"=>"/drive/review"
+                    ],[
+                        "title"=>"视频审核",
+                        "url"=>"/article/logger"
+                    ],[
+                        "title"=>"商城审核",
                         "url"=>"/article/logger"
                     ]
                 ]
             ],[
-
+                "name"=>"home",
+                "title"=>"商城商户",
+                "icon"=>"layui-icon-home",
+                "children"=>[
+                    [
+                        "title"=>"产品套餐",
+                        "url"=>"/goods/combos"
+                    ],[
+                        "title"=>"发货管理",
+                        "url"=>"/goods/shipment"
+                    ]
+                ]
             ]
         ]; 
     }

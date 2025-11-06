@@ -18,14 +18,15 @@
   <div class="layui-row layui-col-space15">
     <div class="layui-col-md8">
       <div class="layui-card">
-        <div class="layui-card-header layui-btn-container">
-            <!-- <div class=""> -->
+        <div class="layui-card-header layui-btn-container" style="display: flex ; align-items: center; justify-content: space-between;">
+            <div>查询过滤</div>
+            <div class="">
                 <button type="button" class="layui-btn layui-btn-sm" data-status="1" lay-active="articleFilter">审核通过</button> 
                 <button type="button" class="layui-btn layui-btn-sm" data-status="10" lay-active="articleFilter">等待一审</button> 
                 <button type="button" class="layui-btn layui-btn-sm" data-status="20" lay-active="articleFilter">等待二审</button> 
                 <button type="button" class="layui-btn layui-btn-sm" data-status="30" lay-active="articleFilter">等待三审</button> 
-                <button type="button" class="layui-btn layui-btn-sm" data-status="0" lay-active="articleFilter">查看草稿</button> 
-            <!-- </div> -->
+                <button type="button" class="layui-btn layui-btn-sm" data-status="0" lay-active="articleFilter">只看草稿</button> 
+            </div>
         </div>
         <div class="layui-card-body">
           <table id="table_article_list" lay-filter="table_article_list"></table>
@@ -37,6 +38,7 @@
         <div class="layui-card-header">管理日志</div>
         <div class="layui-card-body">
           <table id="table_article_logger" lay-filter="table_article_logger"></table>
+          
         </div>
       </div>
     </div>
@@ -70,29 +72,41 @@ layui.use(['admin'], function(){
 
         }
     });
-    // table.render({
-    //     elem:'#table_article_logger',
-    //     url:'article/logger',
-    //     cols:[
-    //         [
-    //             {type:'radio',fixed:'left',title:'选中'},
-    //             {field:'title',title:'标题'}
-    //         ]
-    //     ],
-    //     parseData:function(res){
-    //         console.log(res)
-    //         return {
-    //             code:0,
-    //             msg:'',
-    //             count:0,
-    //             data:res.result.data
-    //         }
-
-    //     }
-    // });
+    // 
+    const loggerRender = (uuid)=>{
+        table.render({
+            elem:'#table_article_logger',
+            url:'https://api.youloge.com/article/logger',
+            where:{
+                mode:'article',
+                uuid:uuid
+            },
+            cols:[
+                [
+                    {field:'field',title:'修改字段'},
+                    {field:'oldest',title:'原值'},
+                    {field:'latest',title:'现值'},
+                    {field:'remark',title:'备注'},
+                    {field:'created',title:'创建时间'},
+                ]
+            ],
+            parseData:function(res){
+                console.log(res)
+                return {
+                    code:0,
+                    msg:'',
+                    count:0,
+                    data:res.result.data
+                }
+    
+            }
+        });
+    }
     // 单机
     table.on('radio(table_article_list)', function(obj) {
-        console.log(obj)
+        let uuid = obj.data.uuid;
+        loggerRender(uuid)
+        console.log(obj.data)
     });
     
     // 加载日志
@@ -102,15 +116,13 @@ layui.use(['admin'], function(){
     // 事件监听
     util.on('lay-active',{
         'articleFilter':function(){
+            let {status} = this.dataset
             table.reload('table_article_list',{
                 where:{
-                    status:10
+                    status:status
                 }
-            })
-            console.log(this.dataset,article_table)
+            });
         }
     });
-    console.log('util',util)
-  
 });
 </script>
