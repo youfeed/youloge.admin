@@ -967,6 +967,7 @@ layui.define('view', function(exports) {
         var rst = {};
         var obj = {};
         obj[request.tokenName] = layui.data(setter.tableName)[request.tokenName] || opts.value || '';
+        obj[request.organName] = layui.data(setter.tableName)[request.organName] || opts.value || '';
 
         // token 的传参方式
         if (request.tokenTransferMethod === 'headers') { // Headers 方式传递
@@ -980,6 +981,10 @@ layui.define('view', function(exports) {
 
       // 带数据请求功能的基础组件
       table.set(dynamicOptions('where')); // table
+      table.set({
+        method:'post',
+        contentType:'application/json',
+      })
       upload.set(dynamicOptions()); // upload
     }
     return fn;

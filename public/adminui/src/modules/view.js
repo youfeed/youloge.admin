@@ -68,8 +68,8 @@ layui.define(['laytpl', 'layer'], function(exports) {
     options.headers = options.headers || {};
 
     // 是否已开启自动传递 token
-    options.headers['organization'] = layui.data(setter.tableName)['organization'] || '';
-    options.headers['authorization'] = layui.data(setter.tableName)['authorization'] || '';
+    options.headers[request.organName] = layui.data(setter.tableName)[request.organName] || '';
+    options.headers[request.tokenName] = layui.data(setter.tableName)[request.tokenName] || '';
     // if (request.tokenName) {
     //   var sendData = typeof options.data === 'string'
     //     ? JSON.parse(options.data)

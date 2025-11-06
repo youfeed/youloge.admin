@@ -141,12 +141,17 @@ class Authorized implements MiddlewareInterface
         @['noNeedLogin'=>$noNeedLogin] = $this->needReflect($request);
         // 判断是否需要登录认证
         if(in_array($action, $noNeedLogin) == false) {
-            $secret = ini('APIKEY.SECRET',null);
             if($authorization == null) throw new Exception('Authorization is Null',407);
+            $secret = ini('APIKEY.SECRET',null);
+            if($secret == null) throw new Exception('Secret is Null',407);
+            $secret_bin = safe_base64_decode($secret);
             $bin = safe_base64_decode($authorization);$iv = substr($bin,0,16);
-            $two = openssl_decrypt(substr($bin,16),'AES-256-CBC',substr($secret,0,32),1,$iv);
-            $one = openssl_decrypt($two,'AES-256-CBC',substr($secret,32,64),1,$iv);
-            $request->author = $one;
+            $two = openssl_decrypt(substr($bin,16),'AES-256-CBC',substr($secret_bin,0,32),1,$iv);
+            $one = openssl_decrypt($two,'AES-256-CBC',substr($secret_bin,32,64),1,$iv);
+            // 
+            @['uuid'=>$uuid,'expire'=>$expire] = $request->author = json_decode($one,true);
+            if($uuid == null) throw new Exception('Authorization is Error',407);
+            if($expire < time()) throw new Exception('Authorization is Expire',401);
         }
     }
     /**

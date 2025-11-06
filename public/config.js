@@ -25,9 +25,10 @@ layui.define(['all'], function(exports){
     debug: true, // 是否开启调试模式。如开启，接口异常时会抛出异常 URL 等信息
     interceptor: true, // 是否开启未登入拦截
 
-    // 自定义请求字段
+    // 自定义请求字段 
     request: {
-      tokenName: 'authorization', // 接口自动传递 token 的字段名。可设置 false 不传递
+      organName: 'organization', // 请求组织
+      tokenName: 'authorization', // 接口自动传递 token 的字段名。
       tokenTransferMethod: 'headers' // token 的传递方式（可选值: data | headers） --- v2.4.0 新增
     },
 

@@ -1,6 +1,8 @@
+
 <script type="text/html" template>
   <link rel="stylesheet" href="{{ layui.setter.paths.core }}css/login.css?v={{ layui.admin.v }}" media="all">
 </script>
+
 
 
 <div class="layadmin-user-login layadmin-user-display-show" id="LAY-user-login" style="display: none;">
@@ -10,7 +12,8 @@
             <h2>Youloge 控制台</h2>
             <p> </p>
         </div>
-        <div class="layadmin-user-login-box layadmin-user-login-body layui-form">
+        <div class="layadmin-user-login-box layadmin-user-login-body layui-form" id="plus-login" style="height: 500px;"></div>
+        <div class="layadmin-user-login-box layadmin-user-login-body layui-form" style="display: none;">
             <div class="layui-form-item">
                 <label class="layadmin-user-login-icon layui-icon layui-icon-username"
                     for="LAY-user-login-username"></label>
@@ -90,7 +93,9 @@
         form.render();
         const plus = youloge.plus();
         console.log(plus)
-        plus.useLogin().then(result => {
+        plus.useLogin({
+            selector:'#plus-login'
+        }).then(result => {
             // 写入 access_token
             layui.data(setter.tableName, {
                 key: setter.request.tokenName,

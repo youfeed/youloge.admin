@@ -7,27 +7,37 @@ use support\Request;
 
 class ConfigController
 {
+    protected $noNeedRight = []; // 不验证组织来源
+    protected $noNeedLogin = []; // 不验证登录信息
+    
     public function menu(Request $request)
     {
         return [
             [
+                "name"=> "control",
+                "title"=> "控制台",
+                "icon"=> "layui-icon-auz",
+                "url"=> "/"
+            ],[
                 "name"=>"home",
-                "title"=>"主页",
+                "title"=>"新闻资讯",
                 "icon"=>"layui-icon-home",
                 "children"=>[
                     [
-                    "title"=>"控制台",
-                    "url"=>"/"
+                        "title"=>"新闻列表",
+                        "url"=>"/article/list"
                     ],
                     [
-                    "title"=>"主页一",
-                    "url"=>"/home/homepage1/keyword=123"
+                        "title"=>"新闻审核",
+                        "url"=>"/article/review"
                     ],
                     [
-                    "title"=>"主页二",
-                    "url"=>"/home/homepage2"
+                        "title"=>"审核日志",
+                        "url"=>"/article/logger"
                     ]
                 ]
+            ],[
+
             ]
         ]; 
     }

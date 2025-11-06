@@ -31,7 +31,8 @@
     "youloge/webman.validate": "^1.4",
     "webman/database": "^2.1",
     "illuminate/pagination": "^10.49",
-    "revolt/event-loop": "^1.0"
+    "revolt/event-loop": "^1.0",
+    "workerman/http-client": "^3.0"
   },
   "suggest": {
     "ext-event": "For better performance. "
