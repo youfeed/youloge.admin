@@ -14,6 +14,32 @@ if(!function_exists('safe_base64_decode')){
   }
 }
 /**
+ * Youloge 加解密
+ * 算法：AES-256-CBC
+ */
+if(!function_exists('YoulogeEncrypt')){
+  function YoulogeEncrypt($string){
+    try {
+        $secret = ini('APIKEY.SECRET');
+        $cipher = safe_base64_decode($string);
+        $iv = substr($cipher,0,16);$bin = substr($cipher,16);
+        $outer_key = substr($secret,0,32);
+        $inner_key = substr($secret,32,64);
+        $outer = openssl_decrypt($bin,'AES-256-CBC',$outer_key,1,$iv);
+        $text = openssl_decrypt($two,'AES-256-CBC',$inner_key,1,$iv);
+        return json_decode($text,true) ?? ['raw'=>$text];
+    } catch (\Throwable $th) {
+        return [ 'err'=>$th->getCode(),'msg'=>$th->getMessage() ];
+    }
+  }
+}
+if(!function_exists('YoulogeDecrypt')){
+  function onRequest($data){
+    return base64_decode(str_replace(['-','_'],['+','/'],$data));
+  }
+}
+
+/**
  * 网络请求封装
  * $http = new Workerman\Http\Client();
  */
