@@ -29,7 +29,7 @@ Route::fallback(function(Request $request){
             'Access-Control-Allow-Methods' => 'GET,POST,PUT,DELETE,OPTIONS',
         ]);
     return $response;
-    return json(['id'=>null,'error'=>['code' => 404, 'msg'=>'Route 404']]);
+    // return json(['id'=>null,'error'=>['code' => 404, 'msg'=>'Route 404']]);
 });
 
 
