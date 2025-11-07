@@ -16,10 +16,6 @@ use Webman\Route;
 
 
 
-Route::any( function (Request $request) {
-    return response('',204);
-});
-
 Route::fallback(function(){
     $response = response('');
     $response->withHeaders([
