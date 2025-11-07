@@ -11,7 +11,7 @@
  * @link      http://www.workerman.net/
  * @license   http://www.opensource.org/licenses/mit-license.php MIT License
  */
-use Webman\Http\Response;
+// use Webman\Http\Response;
 use Webman\Route;
 
 
@@ -21,7 +21,7 @@ use Webman\Route;
 // });
 
 Route::fallback(function(){
-    $response = new Response('');
+    $response = response('');
     $response->withHeaders([
             'Access-Control-Allow-Origin' => '*',
             'Access-Control-Allow-Credentials' => 'true',
