@@ -186,18 +186,37 @@ class Authorized implements MiddlewareInterface
         }
     }
     /**
+     * 允许跨域
+     * 建议在Nigix中配置
+     */
+    private function needHeaders(Response $response){
+        $response->withHeaders([
+            'Access-Control-Allow-Origin' => '*',
+                    'Access-Control-Allow-Methods' => 'GET,POST,PUT,DELETE,OPTIONS',
+                    'Access-Control-Allow-Headers' => 'Content-Type,Organization,Authorization,X-Requested-With,Accept,Origin',
+        ]);
+        return $response;
+    }
+    /**
      * 错误捕获
      */
     public function process(Request $request, callable $next): Response
     {
         $path = $request->path();$method = $request->method();
         try {
+            // 跨域配置
+            if ($method == 'OPTIONS') {
+                $response = response('',206);
+                return needHeaders($response);
+            }
             // 首页跳过
             if($path == '/' && $method == 'GET'){
-                return $next($request);
+                $response = $next($request);
+                return needHeaders($response);
             }
             // 标准JSONRPC 简易JSONRPC
-            return $request->path() == '/' ? $this->standardProcess($request) : $this->simplifyProcess($request); 
+            $response =  $request->path() == '/' ? $this->standardProcess($request) : $this->simplifyProcess($request); 
+            return needHeaders($response);
         } catch (\Throwable $th) {
             $error = [
                 'code'=>$th->getCode(),
