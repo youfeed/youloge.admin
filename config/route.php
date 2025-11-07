@@ -21,7 +21,7 @@ use Webman\Route;
 // });
 
 Route::fallback(function(Request $request){
-    $response = new Response();
+    $response = new Response('');
     $response->withHeaders([
             'Access-Control-Allow-Origin' => '*',
             'Access-Control-Allow-Credentials' => 'true',
