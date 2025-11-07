@@ -192,8 +192,8 @@ class Authorized implements MiddlewareInterface
     private function needHeaders(Response $response){
         $response->withHeaders([
             'Access-Control-Allow-Origin' => '*',
-                    'Access-Control-Allow-Methods' => 'GET,POST,PUT,DELETE,OPTIONS',
-                    'Access-Control-Allow-Headers' => 'Content-Type,Organization,Authorization,X-Requested-With,Accept,Origin',
+            'Access-Control-Allow-Methods' => 'GET,POST,PUT,DELETE,OPTIONS',
+            'Access-Control-Allow-Headers' => 'Content-Type,Organization,Authorization,X-Requested-With,Accept,Origin',
         ]);
         return $response;
     }
@@ -211,11 +211,11 @@ class Authorized implements MiddlewareInterface
             }
             // 首页跳过
             if($path == '/' && $method == 'GET'){
-                $response = $next($request);
+                return $next($request);
                 return needHeaders($response);
             }
             // 标准JSONRPC 简易JSONRPC
-            $response =  $request->path() == '/' ? $this->standardProcess($request) : $this->simplifyProcess($request); 
+            return $request->path() == '/' ? $this->standardProcess($request) : $this->simplifyProcess($request); 
             return needHeaders($response);
         } catch (\Throwable $th) {
             $error = [
