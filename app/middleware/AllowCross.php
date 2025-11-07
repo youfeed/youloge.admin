@@ -21,15 +21,15 @@ class AllowCross implements MiddlewareInterface
 
     public function process(Request $request, callable $handler): Response
     {
-        // 1. 处理 OPTIONS 预检请求（直接返回跨域头，不执行后续业务逻辑）
-        if ($request->method() === 'OPTIONS') {
-            $response = new Response('', 204); // 204 No Content（预检请求标准响应）
-            return $this->setCorsHeaders($response, $request);
-        }
+        $response = $request->method() == 'OPTIONS' ? response('') : $next($request);
+        $response->withHeaders([
+            'Access-Control-Allow-Credentials' => 'true',
+            'Access-Control-Allow-Origin' => $request->header('origin', '*'),
+            'Access-Control-Allow-Methods' => $request->header('access-control-request-method', '*'),
+            'Access-Control-Allow-Headers' => $request->header('access-control-request-headers', '*'),
+        ]);
 
-        // 2. 处理正常请求（执行业务逻辑后添加跨域头）
-        $response = $handler($request); // 核心修正：用 $handler 替代 $next
-        return $this->setCorsHeaders($response, $request);
+        return $response;
     }
 
     /**
