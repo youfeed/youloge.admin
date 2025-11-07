@@ -20,7 +20,7 @@ use Webman\Route;
 //     return response('',204);
 // });
 
-Route::fallback(function(Request $request){
+Route::fallback(function(){
     $response = new Response('');
     $response->withHeaders([
             'Access-Control-Allow-Origin' => '*',
