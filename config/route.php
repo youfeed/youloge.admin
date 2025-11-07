@@ -11,21 +11,12 @@
  * @link      http://www.workerman.net/
  * @license   http://www.opensource.org/licenses/mit-license.php MIT License
  */
-// use Webman\Http\Response;
+
 use Webman\Route;
 
 
-
 Route::fallback(function(){
-    $response = response('');
-    $response->withHeaders([
-            'Access-Control-Allow-Origin' => '*',
-            'Access-Control-Allow-Credentials' => 'true',
-            'Access-Control-Allow-Headers' => '*',
-            'Access-Control-Allow-Methods' => 'GET,POST,PUT,DELETE,OPTIONS',
-        ]);
-    return $response;
-    // return json(['id'=>null,'error'=>['code' => 404, 'msg'=>'Route 404']]);
+    return json(['id'=>null,'error'=>['code' => 404, 'msg'=>'Route 404']]);
 });
 
 
