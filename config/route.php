@@ -17,7 +17,7 @@ use Webman\Route;
 
 
 Route::options('[{path:.+}]', function (Request $request) {
-    $response = response('',204);
+    $response = new Response('',204);
     $response->withHeaders([
         'Access-Control-Allow-Credentials' => 'true',
         'Access-Control-Allow-Origin' => "*",
