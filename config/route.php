@@ -15,19 +15,18 @@
 use Webman\Route;
 
 Route::fallback(function(Request $request){
-  $response = strtoupper($request->method()) === 'OPTIONS' ? response('', 204) : response('', 404);
-  $response->withHeaders([
+    return json(['id'=>null,'error'=>['code' => 404, 'msg'=>'Route 404']]);
+});
+
+Route::options('[{path:.+}]', function (Request $request) {
+    $response = response('',204);
+    $response->withHeaders([
         'Access-Control-Allow-Credentials' => 'true',
         'Access-Control-Allow-Origin' => "*",
         'Access-Control-Allow-Methods' => '*',
         'Access-Control-Allow-Headers' => '*',
     ]);
     return $response;
-  return json(['id'=>null,'error'=>['code' => 404, 'msg'=>'Route 404']]);
-});
-
-Route::options('[{path:.+}]', function () {
-    return response('');
 });
 
 
