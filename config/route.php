@@ -21,6 +21,14 @@ use Webman\Route;
 // });
 
 Route::fallback(function(Request $request){
+    $response = new Response();
+    $response->withHeaders([
+            'Access-Control-Allow-Origin' => '*',
+            'Access-Control-Allow-Credentials' => 'true',
+            'Access-Control-Allow-Headers' => '*',
+            'Access-Control-Allow-Methods' => 'GET,POST,PUT,DELETE,OPTIONS',
+        ]);
+    return $response;
     return json(['id'=>null,'error'=>['code' => 404, 'msg'=>'Route 404']]);
 });
 
