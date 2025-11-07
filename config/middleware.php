@@ -14,6 +14,7 @@
 
 return [
     ''=>[
-        app\middleware\Authorized::class
+        app\middleware\AllowCross::class,
+        app\middleware\Authorized::class,
     ]
 ];
