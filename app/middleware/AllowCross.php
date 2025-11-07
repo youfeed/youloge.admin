@@ -19,7 +19,7 @@ class AllowCross implements MiddlewareInterface
         'max_age' => 1728000 // 预检请求缓存 24 小时
     ];
 
-    public function process(Request $request, callable $handler): Response
+    public function process(Request $request, callable $next): Response
     {
         $response = $request->method() == 'OPTIONS' ? response('') : $next($request);
         $response->withHeaders([
