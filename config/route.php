@@ -17,15 +17,7 @@ use Webman\Route;
 
 
 Route::options('[{path:.+}]', function (Request $request) {
-    return response('');
-    $response = new Response('',204);
-    $response->withHeaders([
-        'Access-Control-Allow-Credentials' => 'true',
-        'Access-Control-Allow-Origin' => "*",
-        'Access-Control-Allow-Methods' => '*',
-        'Access-Control-Allow-Headers' => '*',
-    ]);
-    return $response;
+    return response('',204);
 });
 
 Route::fallback(function(Request $request){
