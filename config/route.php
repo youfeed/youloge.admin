@@ -17,6 +17,7 @@ use Webman\Route;
 
 
 Route::options('[{path:.+}]', function (Request $request) {
+    return response('');
     $response = new Response('',204);
     $response->withHeaders([
         'Access-Control-Allow-Credentials' => 'true',

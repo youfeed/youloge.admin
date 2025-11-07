@@ -207,16 +207,16 @@ class Authorized implements MiddlewareInterface
             // 跨域配置
             if ($method == 'OPTIONS') {
                 $response = response('',206);
-                return needHeaders($response);
+                // return needHeaders($response);
             }
             // 首页跳过
             if($path == '/' && $method == 'GET'){
                 return $next($request);
-                return needHeaders($response);
+                // return needHeaders($response);
             }
             // 标准JSONRPC 简易JSONRPC
             return $request->path() == '/' ? $this->standardProcess($request) : $this->simplifyProcess($request); 
-            return needHeaders($response);
+            // return needHeaders($response);
         } catch (\Throwable $th) {
             $error = [
                 'code'=>$th->getCode(),
