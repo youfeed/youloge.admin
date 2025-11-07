@@ -11,7 +11,7 @@
  * @link      http://www.workerman.net/
  * @license   http://www.opensource.org/licenses/mit-license.php MIT License
  */
-use support\Response;
+use Webman\Http\Response;
 use Webman\Route;
 
 
