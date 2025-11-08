@@ -64,7 +64,7 @@ if(!function_exists('onRequest')){
  */
 if(!function_exists('vipRequest')){
   function vipRequest($method,$params=[],$access_token=''){
-    $http = new \Workerman\Http\Client();
+    $http = new Workerman\Http\Client();
     $Organization = ini('APIKEY.APIKEY');
     $Authorization = $access_token;
     $response = $http->request("https://vip.youloge.com/$method", [
@@ -79,8 +79,7 @@ if(!function_exists('vipRequest')){
         'data' => $params,
     ]);
     $code = $response->getStatusCode();
-    print_r("$code");
     $raw = (string)$response->getBody();
-    return json_decode($raw,true) ?? ['raw'=>$raw];
+    return json_decode($raw,true) ?? ['code'=>$code,'raw'=>$raw];
   }
 }
