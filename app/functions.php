@@ -63,11 +63,11 @@ if(!function_exists('onRequest')){
  * VIP 接口封装
  */
 if(!function_exists('vipRequest')){
-  function vipRequest($routed,$params=[],$access_token=''){
+  function vipRequest($method,$params=[],$access_token=''){
     $http = new \Workerman\Http\Client();
     $Organization = ini('APIKEY.APIKEY');
     $Authorization = $access_token;
-    $response = $http->request("https://vip.youloge.com/$routed", [
+    $response = $http->request("https://vip.youloge.com/$method", [
         'method' => 'POST',
         'version' => '1.1',
         'headers' => [
