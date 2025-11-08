@@ -48,7 +48,7 @@ class PaymentController
         //     'data' => ['method' => $method, 'params' => $params],
         // ]);
         // @['error'=>$error,'result'=>$result] = json_decode((string)$response->getBody(),true);
-        // 消费失败
+        // 消费失败 
         if($error) throw new Exception($error['message'],$error['code']);
         // 冲单成功 记录日志
         return $result; 
