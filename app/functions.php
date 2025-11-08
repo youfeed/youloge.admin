@@ -22,7 +22,7 @@ if(!function_exists('YoulogeEncrypt')){
     function YoulogeEncrypt($array = []){
         try {
             $secret = safe_base64_decode(ini('APIKEY.SECRET'));
-            strlen($secret) > 0 && throw new Exception('密钥长度不足，需至少 64 字节'.strlen($secret));
+            if(strlen($secret) > 0) throw new Exception('密钥长度不足，需至少 64 字节'.strlen($secret),10);
             $iv = openssl_random_pseudo_bytes(16);$text = json_encode($array);
             $inner_key = substr($secret,0,32);
             $outer_key = substr($secret,32,64);
