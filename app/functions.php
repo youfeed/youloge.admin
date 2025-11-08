@@ -2,7 +2,6 @@
 /**
  * Here is your custom functions.
  */
-use Exception;
 // 安全BASE64
 if(!function_exists('safe_base64_encode')){
   function safe_base64_encode($data){
