@@ -76,7 +76,7 @@ if(!function_exists('vipRequest')){
             'Organization'=>$Organization,
             'Authorization'=>$Authorization,
         ],
-        'data' => $params,
+        'data' => json_encode($params),
     ]);
     $code = $response->getStatusCode();
     $raw = (string)$response->getBody();
