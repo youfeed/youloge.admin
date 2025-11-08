@@ -78,6 +78,8 @@ if(!function_exists('vipRequest')){
         ],
         'data' => $params,
     ]);
+    $code = $response->getStatusCode();
+    print_r("$code");
     $raw = (string)$response->getBody();
     return json_decode($raw,true) ?? ['raw'=>$raw];
   }
