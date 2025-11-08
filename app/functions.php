@@ -72,6 +72,7 @@ if(!function_exists('vipRequest')){
         'version' => '1.1',
         'headers' => [
             'Connection' => 'keep-alive',
+            'Content-Type' => 'application/json',
             'Organization'=>$Organization,
             'Authorization'=>$Authorization,
         ],
