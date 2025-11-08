@@ -39,6 +39,7 @@ class PaymentController
         @['error'=>$error,'result'=>$result] = vipRequest($method,$params);
         // 标准JSONROC 发起冲单(返回实时支付结果)
         $http = new Workerman\Http\Client();
+        $Organization = ini('APIKEY.APIKEY');
         $response = $http->request('https://vip.youloge.com', [
             'method' => 'POST',
             'version' => '1.1',
@@ -48,7 +49,7 @@ class PaymentController
         @['error'=>$error,'result'=>$result] = json_decode((string)$response->getBody(),true);
         // 消费失败
         if($error) throw new Exception($error['message'],$error['code']);
-        // 冲单成功
+        // 冲单成功 记录日志
         return $result; 
     }
 }
