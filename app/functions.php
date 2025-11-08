@@ -24,9 +24,8 @@ if(!function_exists('YoulogeEncrypt')){
             $iv = substr($cipher,0,16);$text = json_encode($array);
             $inner_key = substr($secret,0,32);
             $outer_key = substr($secret,32,64);
-            $outer = openssl_decrypt($text,'AES-256-CBC',$outer_key,1,$iv);
-            $inner = openssl_decrypt($outer,'AES-256-CBC',$inner_key,1,$iv);
-            $cipher = safe_base64_encode($inner);
+            $outer = openssl_encrypt($text,'AES-256-CBC',$outer_key,1,$iv);
+            $inner = openssl_encrypt($outer,'AES-256-CBC',$inner_key,1,$iv);
             return safe_base64_encode($iv.$inner);
         } catch (\Throwable $th) {
             return [ 'err'=>$th->getCode(),'msg'=>$th->getMessage() ];
