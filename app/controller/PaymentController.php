@@ -38,7 +38,7 @@ class PaymentController
         // 简化JSONROC 发起冲单(返回实时支付结果)
         @['error'=>$error,'result'=>$result] = vipRequest($method,$params);
         // 标准JSONROC 发起冲单(返回实时支付结果)
-        $http = new Workerman\Http\Client();
+        $http = new \Workerman\Http\Client();
         $Organization = ini('APIKEY.APIKEY');
         $response = $http->request('https://vip.youloge.com', [
             'method' => 'POST',
