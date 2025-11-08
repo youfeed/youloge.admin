@@ -125,6 +125,7 @@ class Authorized implements MiddlewareInterface
             $error = [
                 'code'=>$th->getCode(),
                 'message'=>$th->getMessage(),
+                'trace'=>$th->getTrace()
             ];
             $response = ['id'=>null,'error'=>$error];
         }
@@ -221,7 +222,6 @@ class Authorized implements MiddlewareInterface
             $error = [
                 'code'=>$th->getCode(),
                 'message'=>$th->getMessage(),
-                'trace'=>$th->getTrace()
             ];
             return json(['id'=>null,'error'=>$error]);
         }
