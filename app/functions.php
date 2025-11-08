@@ -56,7 +56,7 @@ if(!function_exists('YoulogeDecrypt')){
  */
 if(!function_exists('onRequest')){
   function onRequest($data){
-    $http = new Workerman\Http\Client();
+    $http = new \Workerman\Http\Client();
   }
 }
 /**
@@ -64,7 +64,7 @@ if(!function_exists('onRequest')){
  */
 if(!function_exists('vipRequest')){
   function vipRequest($routed,$params=[],$access_token=''){
-    $http = new Workerman\Http\Client();
+    $http = new \Workerman\Http\Client();
     $Organization = ini('APIKEY.APIKEY');
     $Authorization = $access_token;
     $response = $http->request("https://vip.youloge.com/$routed", [
