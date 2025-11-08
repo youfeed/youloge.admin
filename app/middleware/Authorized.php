@@ -125,7 +125,8 @@ class Authorized implements MiddlewareInterface
             $error = [
                 'code'=>$th->getCode(),
                 'message'=>$th->getMessage(),
-                'trace'=>$th->getTrace()
+                ini('DEBUG.LINE') && 'line'=>$th->getLine(),
+                ini('DEBUG.TRACE') && 'trace'=>$th->getTrace()
             ];
             $response = ['id'=>null,'error'=>$error];
         }
