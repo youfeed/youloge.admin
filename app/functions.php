@@ -22,11 +22,11 @@ if(!function_exists('YoulogeEncrypt')){
     try {
         $secret = ini('APIKEY.SECRET');
         $cipher = safe_base64_decode($string);
-        $iv = substr($cipher,0,16);$bin = substr($cipher,16);
+        $iv = substr($cipher,0,16);$text = substr($cipher,16);
         $outer_key = substr($secret,0,32);
         $inner_key = substr($secret,32,64);
-        $outer = openssl_decrypt($bin,'AES-256-CBC',$inner_key,1,$iv);
-        $inner = openssl_decrypt($outer,'AES-256-CBC',$outer_key,1,$iv);
+        $outer = openssl_decrypt($text,'AES-256-CBC',$outer_key,1,$iv);
+        $inner = openssl_decrypt($outer,'AES-256-CBC',$inner_key,1,$iv);
         return json_decode($inner,true) ?? ['raw'=>$inner];
     } catch (\Throwable $th) {
         return [ 'err'=>$th->getCode(),'msg'=>$th->getMessage() ];

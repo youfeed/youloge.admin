@@ -22,6 +22,6 @@ class PaymentController
         ]);if($err) throw new Exception($msg,$err);
         // 解密签名
         $de = YoulogeEncrypt($signature);
-        return ['des'=>$de]; 
+        return ['des'=>$de,'signature'=>$signature]; 
     }
 }
