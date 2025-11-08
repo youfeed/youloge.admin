@@ -20,8 +20,10 @@ class PaymentController
             'expire'=>'int',
             'signature'=>'string'
         ]);if($err) throw new Exception($msg,$err);
+        $en = YoulogeEncrypt(['a'=>12235]);
+        $de = YoulogeDecrypt($en);
         // 解密签名
-        $de = YoulogeEncrypt($signature);
-        return ['des'=>$de,'signature'=>$signature]; 
+        $de2 = YoulogeDecrypt($signature);
+        return ['des'=>[$de,$de2],'signature'=>$signature]; 
     }
 }

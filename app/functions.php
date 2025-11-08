@@ -18,24 +18,36 @@ if(!function_exists('safe_base64_decode')){
  * 算法：AES-256-CBC
  */
 if(!function_exists('YoulogeEncrypt')){
-  function YoulogeEncrypt($string){
-    try {
-        $secret = ini('APIKEY.SECRET');
-        $cipher = safe_base64_decode($string);
-        $iv = substr($cipher,0,16);$text = substr($cipher,16);
-        $outer_key = substr($secret,0,32);
-        $inner_key = substr($secret,32,64);
-        $outer = openssl_decrypt($text,'AES-256-CBC',$outer_key,1,$iv);
-        $inner = openssl_decrypt($outer,'AES-256-CBC',$inner_key,1,$iv);
-        return json_decode($inner,true) ?? ['raw'=>$inner];
-    } catch (\Throwable $th) {
-        return [ 'err'=>$th->getCode(),'msg'=>$th->getMessage() ];
+    function YoulogeEncrypt($array = []){
+        try {
+            $secret = ini('APIKEY.SECRET');
+            $iv = substr($cipher,0,16);$text = json_encode($array);
+            $inner_key = substr($secret,0,32);
+            $outer_key = substr($secret,32,64);
+            $outer = openssl_decrypt($text,'AES-256-CBC',$outer_key,1,$iv);
+            $inner = openssl_decrypt($outer,'AES-256-CBC',$inner_key,1,$iv);
+            $cipher = safe_base64_encode($inner);
+            return safe_base64_encode($iv.$inner);
+        } catch (\Throwable $th) {
+            return [ 'err'=>$th->getCode(),'msg'=>$th->getMessage() ];
+        }
     }
-  }
 }
 if(!function_exists('YoulogeDecrypt')){
-  function onRequest($data){
-    return base64_decode(str_replace(['-','_'],['+','/'],$data));
+    function YoulogeDecrypt($string){
+        try {
+            $secret = ini('APIKEY.SECRET');
+            $cipher = safe_base64_decode($string);
+            $iv = substr($cipher,0,16);
+            $text = substr($cipher,16);
+            $outer_key = substr($secret,0,32);
+            $inner_key = substr($secret,32,64);
+            $outer = openssl_decrypt($text,'AES-256-CBC',$outer_key,1,$iv);
+            $inner = openssl_decrypt($outer,'AES-256-CBC',$inner_key,1,$iv);
+            return json_decode($inner,true) ?? ['raw'=>$inner];
+        } catch (\Throwable $th) {
+            return [ 'err'=>$th->getCode(),'msg'=>$th->getMessage() ];
+        }
   }
 }
 
