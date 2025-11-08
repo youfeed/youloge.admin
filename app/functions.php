@@ -52,11 +52,11 @@ if(!function_exists('YoulogeDecrypt')){
 
 /**
  * 网络请求封装
- * $http = new Workerman\Http\Client();
+ * 
  */
 if(!function_exists('onRequest')){
   function onRequest($data){
-    return base64_decode(str_replace(['-','_'],['+','/'],$data));
+    $http = new Workerman\Http\Client();
   }
 }
 /**
