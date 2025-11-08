@@ -21,16 +21,14 @@ if(!function_exists('YoulogeEncrypt')){
     function YoulogeEncrypt($array = []){
         try {
             $secret = safe_base64_decode(ini('APIKEY.SECRET'));
-            // if(strlen($secret) > 0) throw new Exception('密钥长度不足，需至少 64 字节'.strlen($secret),10);
             $iv = openssl_random_pseudo_bytes(16);$text = json_encode($array);
             $inner_key = substr($secret,0,32);
             $outer_key = substr($secret,32,64);
             $outer = openssl_encrypt($text,'AES-256-CBC',$outer_key,1,$iv);
             $inner = openssl_encrypt($outer,'AES-256-CBC',$inner_key,1,$iv);
-            return strlen($secret);
             return safe_base64_encode($iv.$inner);
         } catch (\Throwable $th) {
-            return [ 'err'=>$th->getCode(),'msg'=>$th->getMessage(),'secret'=>$secret ];
+            return [ 'err'=>$th->getCode(),'msg'=>$th->getMessage()];
         }
     }
 }
