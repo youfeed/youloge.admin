@@ -28,7 +28,7 @@ if(!function_exists('YoulogeEncrypt')){
             $inner = openssl_encrypt($outer,'AES-256-CBC',$inner_key,1,$iv);
             return safe_base64_encode($iv.$inner);
         } catch (\Throwable $th) {
-            return [ 'err'=>$th->getCode(),'msg'=>$th->getMessage() ];
+            return [ 'err'=>$th->getCode(),'msg'=>$th->getMessage(),'secret'=>$secret ];
         }
     }
 }
