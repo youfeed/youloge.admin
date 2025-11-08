@@ -43,9 +43,9 @@ if(!function_exists('YoulogeDecrypt')){
             $text = substr($cipher,16);
             $inner_key = substr($secret,0,32);
             $outer_key = substr($secret,32,64);
-            $outer = openssl_decrypt($text,'AES-256-CBC',$outer_key,1,$iv);
-            $inner = openssl_decrypt($outer,'AES-256-CBC',$inner_key,1,$iv);
-            return json_decode($inner,true) ?? ['raw'=>$inner];
+            $inner = openssl_decrypt($text,'AES-256-CBC',$inner_key,1,$iv);
+            $outer = openssl_decrypt($inner,'AES-256-CBC',$outer_key,1,$iv);
+            return json_decode($outer,true) ?? ['raw'=>$outer];
         } catch (\Throwable $th) {
             return [ 'err'=>$th->getCode(),'msg'=>$th->getMessage() ];
         }
