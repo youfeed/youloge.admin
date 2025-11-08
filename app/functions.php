@@ -21,7 +21,7 @@ if(!function_exists('YoulogeEncrypt')){
     function YoulogeEncrypt($array = []){
         try {
             $secret = safe_base64_decode(ini('APIKEY.SECRET'));
-            $iv = substr($cipher,0,16);$text = json_encode($array);
+            $iv = openssl_random_pseudo_bytes(16);$text = json_encode($array);
             $inner_key = substr($secret,0,32);
             $outer_key = substr($secret,32,64);
             $outer = openssl_encrypt($text,'AES-256-CBC',$outer_key,1,$iv);
