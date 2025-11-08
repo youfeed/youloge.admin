@@ -24,6 +24,6 @@ class PaymentController
         $de = YoulogeDecrypt($en);
         // 解密签名
         $de2 = YoulogeDecrypt($signature);
-        return ['des'=>[$de,$de2],'signature'=>$signature]; 
+        return ['des'=>[$de,$de2],'en'=>$en,'signature'=>$signature]; 
     }
 }
