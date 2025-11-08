@@ -36,6 +36,7 @@ class PaymentController
         ] = $decrypt = YoulogeDecrypt($signature);
         if($err) throw new Exception($msg,$err);
         // 简化JSONROC 发起冲单(返回实时支付结果)
+        return ['decrypt'=>$decrypt];
         @['error'=>$error,'result'=>$result] = vipRequest($method,$params);
         if($error) throw new Exception($error['message'],$error['code']);
         return $result; 
