@@ -18,7 +18,7 @@ class PaymentController
         @['err'=>$err,'msg'=>$msg,'signature'=>$signature] = useValidate($request->all(),[
             'uuid'=>'string',
             'expire'=>'int',
-            'signature'=>'string'
+            'signature'=>'required|string'
         ]);if($err) throw new Exception($msg,$err);
         /**
          * payment 下单参数
