@@ -14,7 +14,6 @@ class PaymentController
      */
     public function drive(Request $request)
     {
-        return ['signature'=>'$signature'];
         $apikey = $request->apikey;
         @['err'=>$err,'msg'=>$msg,'signature'=>$signature] = useValidate($request->all(),[
             'uuid'=>'string',
