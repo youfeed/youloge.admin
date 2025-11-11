@@ -15,7 +15,7 @@ class PaymentController
     public function drive(Request $request)
     {
         $apikey = $request->apikey;
-        @['err'=>$err,'msg'=>$msg,'signature'=>$signature] = $params = useValidate($request->all(),[
+        @['err'=>$err,'msg'=>$msg,'signature'=>$signature] = useValidate($request->all(),[
             'uuid'=>'string',
             'expire'=>'int',
             'signature'=>'string'
@@ -29,6 +29,7 @@ class PaymentController
          * method 调用方法 支持标准JSONRPC或简化JSONROC
          * params 调用参数 支持标准JSONRPC或简化JSONROC
          */
+        return ['signature'=>$signature];
         @[
             'err'=>$err,'msg'=>$msg,
             'payment'=>$payment,'money'=>$money,
