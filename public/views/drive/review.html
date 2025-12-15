@@ -32,35 +32,81 @@
         </div>
     </div>
 </div>
-
+<script type="text/html" id="toolDemo">
+  <div class="layui-clear-space">
+    <a class="layui-btn layui-btn-xs" lay-event="approval">审核审查</a>
+    <a class="layui-btn layui-btn-xs" lay-event="more">
+      更多 
+      <i class="layui-icon layui-icon-down"></i>
+    </a>
+  </div>
+</script> 
 <script>
     layui.use(['admin'], function () {
-        var { $, admin, table, form, setter } = layui, router = layui.router();
+        var { $, admin, table, form, setter,view } = layui, router = layui.router();
         // 加载列表
         const article_table = table.render({
             id: 'table_drive_review_list',
             elem: '#table_drive_review_list',
             url: 'drive/list',
+            where:{limit:10},
+            request: {
+                pageName: 'cursor',
+                limitName: 'limit'
+            },
             cols: [
                 [
                     { type: 'radio', fixed: 'left', title: '选中' },
-                    { field: 'title', title: '标题' }
+                    { field: 'title', title: '标题' },
+                    { field: 'status', title: '状态' },
+                    { field: 'status', title: '审核',templet: '#toolDemo' },
                 ]
             ],
             parseData: function ({error,result}) {
-                if(error) return {code:-1,msg:'error.message'}
-                console.log(res)
+                if(error) return {code:-1,msg:error.message};
                 return {
                     code: 0,
                     msg: '',
                     count: 0,
-                    data: res.result.data
+                    data: result.data
                 }
-
             }
         });
         // 
+        table.on('tool(table_drive_review_list)', function(obj){
+            let {event,data} = obj
+            let actions = {
+                approval:()=>{
+                    console.log(233,data);
+                    admin.popup({
+                        title:`审核${data.title}`,
+                        offset: '80px',
+                        area: ['520px', 'auto'],
+                        id: 'LAY-popup-test1',
+                        success: function(){
+                            view(this.id).render('drive/detail', {
+                                uuid: data.uuid
+                            });
+                        },
+                        btn: ['通过审核', '驳回审核(信息不全)', '驳回审核(资源违规)'],
+                        btn1:function(index, layero, that){
+                            console.log(index, layero, that);
+                            // layero.close()
+                            // return true;
+                            layer.close(index);
+                        },
+                    });
+
+                }
+            };
+            actions[event] ? actions[event]() : '';
+        })
+        table.on('edit(table_drive_review_list)', function(obj){
+            console.log(obj)
+        });
+        // 
         table.render({
+            id:'table_drive_logger',
             elem: '#table_drive_logger',
             url: 'https://api.youloge.com/drive/logger',
             where: {},
@@ -81,8 +127,17 @@
                     count: 0,
                     data: res.result.data
                 }
-
             }
+        });
+        // 
+        table.on('radio(table_drive_review_list)', function(obj) {
+            console.log(obj)
+            let uuid = obj.data.uuid;
+            table.reload('table_drive_logger',{
+                where:{
+                    uuid:uuid
+                }
+            });
         });
 
     });
