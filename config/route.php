@@ -16,7 +16,7 @@ use Webman\Route;
 
 
 Route::fallback(function(){
-    return json(['id'=>null,'error'=>['code' => 404, 'msg'=>'Route 404']]);
+    return json(['id'=>null,'error'=>['code' => 404, 'message'=>'Route 404']]);
 });
 
 

@@ -1,51 +1,89 @@
-
 <title>标题</title>
 
 <div class="layui-card layadmin-header">
-  <div class="layui-breadcrumb" lay-filter="breadcrumb">
-    <a lay-href="">主页</a>
-    <a><cite>组件</cite></a>
-    <a><cite>XXX</cite></a>
-  </div>
+    <div class="layui-breadcrumb" lay-filter="breadcrumb">
+        <a lay-href="">主页</a>
+        <a><cite>审核管理</cite></a>
+        <a><cite>云盘审核</cite></a>
+    </div>
 </div>
 
 <style>
-/* 这段样式只是用于演示 */
-
+    /* 这段样式只是用于演示 */
 </style>
 
 <div class="layui-fluid">
-  <div class="layui-row layui-col-space15">
-    <div class="layui-col-md12">
-      <div class="layui-card">
-        <div class="layui-card-header">YYY</div>
-        <div class="layui-card-body">
-          
-          
-          
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-md8">
+            <div class="layui-card">
+                <div class="layui-card-header">云盘列表</div>
+                <div class="layui-card-body">
+                    <table id="table_drive_review_list" lay-filter="table_drive_review_list"></table>
+                </div>
+            </div>
         </div>
-      </div>
-    </div>
-    <div class="layui-col-md12">
-      <div class="layui-card">
-        <div class="layui-card-header">ZZZ</div>
-        <div class="layui-card-body">
-          
-          
-          
+        <div class="layui-col-md4">
+            <div class="layui-card">
+                <div class="layui-card-header">审核日志</div>
+                <div class="layui-card-body">
+                    <table id="table_drive_logger" lay-filter="table_drive_logger"></table>
+                </div>
+            </div>
         </div>
-      </div>
     </div>
-  </div>
 </div>
 
 <script>
-layui.use(['admin'], function(){
-  var $ = layui.$
-  ,admin = layui.admin
-  ,element = layui.element
-  ,router = layui.router();
+    layui.use(['admin'], function () {
+        var { $, admin, table, form, setter } = layui, router = layui.router();
+        // 加载列表
+        const article_table = table.render({
+            id: 'table_drive_review_list',
+            elem: '#table_drive_review_list',
+            url: 'drive/list',
+            cols: [
+                [
+                    { type: 'radio', fixed: 'left', title: '选中' },
+                    { field: 'title', title: '标题' }
+                ]
+            ],
+            parseData: function ({error,result}) {
+                if(error) return {code:-1,msg:'error.message'}
+                console.log(res)
+                return {
+                    code: 0,
+                    msg: '',
+                    count: 0,
+                    data: res.result.data
+                }
 
-  
-});
+            }
+        });
+        // 
+        table.render({
+            elem: '#table_drive_logger',
+            url: 'https://api.youloge.com/drive/logger',
+            where: {},
+            cols: [
+                [
+                    { field: 'field', title: '修改字段' },
+                    { field: 'oldest', title: '原值' },
+                    { field: 'latest', title: '现值' },
+                    { field: 'remark', title: '备注' },
+                    { field: 'created', title: '创建时间' },
+                ]
+            ],
+            parseData: function (res) {
+                console.log(res)
+                return {
+                    code: 0,
+                    msg: '',
+                    count: 0,
+                    data: res.result.data
+                }
+
+            }
+        });
+
+    });
 </script>
