@@ -20,6 +20,7 @@ layui.define(['all'], function(exports){
 
     name: 'Youloge', // 主题名称
     tableName: 'adminui', // 本地存储表名
+    deployName:'deploy', // 开发配置
     MOD_NAME: 'admin', // 模块事件名
 
     debug: true, // 是否开启调试模式。如开启，接口异常时会抛出异常 URL 等信息
@@ -46,6 +47,7 @@ layui.define(['all'], function(exports){
     // 独立页面路由，可随意添加（无需写参数）
     indPage: [
       '/login', // 登入页
+      '/deploy', // 配置页
     ],
 
     // 配置业务模块目录中的特殊模块

@@ -24,17 +24,17 @@ class ConfigController
                 "icon"=>"layui-icon-home",
                 "children"=>[
                     [
-                        "title"=>"新闻审核",
+                        "title"=>"文章审核",
                         "url"=>"/article/list"
                     ],[
                         "title"=>"云盘审核",
                         "url"=>"/drive/review"
                     ],[
                         "title"=>"视频审核",
-                        "url"=>"/article/logger"
+                        "url"=>"/video/review"
                     ],[
-                        "title"=>"商城审核",
-                        "url"=>"/article/logger"
+                        "title"=>"商品审核",
+                        "url"=>"/goods/review"
                     ]
                 ]
             ],[

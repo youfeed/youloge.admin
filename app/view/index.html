@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
-  <head>
+
+<head>
     <meta charset="utf-8">
     <title>Youloge 开发者后台</title>
     <meta name="renderer" content="webkit">
@@ -8,31 +9,25 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="/layui/css/layui.css" rel="stylesheet">
     <script>
-      if (!/^http(s*):\/\//.test(location.href)) alert('请通过 localhost 访问');
+        if (!/^http(s*):\/\//.test(location.href)) alert('请通过 localhost 访问');
     </script>
-  </head>
-  <body>
+</head>
+
+<body>
     <div id="app"></div>
     <script src="https://unpkg.com/youloge.plus"></script>
     <script src="/layui/layui.js"></script>
     <script src="/index.js"></script>
     <script>
-        // APIKEY 配置
-        let apikey = '<?= $apikey?>';
-        // 临时配置
-        sessionStorage.setItem('youloge',JSON.stringify({
-          APIKEY:apikey
-        }))
-        layui.config({ base: '/',version: '2.4.2' }).use('index', function(){
-            var layer = layui.layer,setter = layui.setter,admin = layui.admin;
+        layui.config({ base: '/', version: '2.4.2' }).use('index', function () {
+            var layer = layui.layer, setter = layui.setter, admin = layui.admin;
+            // 本地配置
+            let deploy = layui.data(setter.deployName);
+            // 临时配置 - 用于PLUS等组件使用
+            sessionStorage.setItem('youloge',JSON.stringify(deploy))
             // 长期配置
-            layui.data(setter.tableName, {
-                key: 'organization',
-                value: apikey
-            });
         });
     </script>
-  </body>
+</body>
+
 </html>
-
-

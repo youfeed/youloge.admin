@@ -1,0 +1,99 @@
+<style>
+    /* 这段样式只是用于演示 */
+</style>
+<title>配置中心</title>
+<blockquote class="layui-elem-quote">
+    配置中心
+</blockquote>
+<h2 id="theme" lay-toc=""></h2>
+
+<div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-md8">
+            <div class="layui-card">
+                <div class="layui-card-header">配置参数</div>
+                <div class="layui-card-body">
+                    <form class="layui-form layui-form-pane" action="" lay-filter="form_deploy" >
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">APIKEY</label>
+                            <div class="layui-input-block">
+                                <input type="text" name="APIKEY" autocomplete="off" placeholder="请输入"
+                                    lay-verify="required" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">后台地址</label>
+                            <div class="layui-input-block">
+                                <input type="text" name="VIPURL" autocomplete="off" placeholder="请输入"
+                                    lay-verify="required" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">调用标准</label>
+                            <div class="layui-input-block">
+                                <input type="radio" name="rpctype" value="standard" title="JOSNRPC2.0" checked>
+                                <input type="radio" name="rpctype" value="simple" title="SimpleJSONRPC2.0">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <div class="layui-input-block">
+                                <button type="submit" class="layui-btn" lay-submit=""
+                                    lay-filter="form_deploy_submit">立即提交</button>
+                                <button type="button" lay-href="/login" class="layui-btn layui-btn-primary">返回登录</button>
+                            </div>
+                        </div>
+                    </form>
+
+
+                </div>
+            </div>
+        </div>
+        <div class="layui-col-md4">
+            <div class="layui-card">
+                <div class="layui-card-header">注意事项</div>
+                <div class="layui-card-body">
+                    <div class="layui-collapse" lay-accordion>
+                        <div class="layui-colla-item">
+                            <div class="layui-colla-title">配置文件仅本地保存？</div>
+                            <div class="layui-colla-content">
+                                仅本地保存
+                                <br>开发者必须实现自己的后台(管理数据)
+                            </div>
+                        </div>
+                        <div class="layui-colla-item">
+                            <div class="layui-colla-title">后台通信协议</div>
+                            <div class="layui-colla-content">
+                                <p>使用JSONRPC2.0 与 MCP协议相同</p>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    layui.use(['admin', 'form', 'collapse'], function () {
+        var { $, admin, element,form,setter } = layui, router = layui.router();
+        form.render()
+        // 读取本地配置
+        const deploy = layui.data(setter.deployName);
+        form.val('form_deploy',deploy)
+        // 监听提交
+        form.on('submit(form_deploy_submit)',(obj)=>{
+            Object.entries(obj.field).forEach(([key,value])=>{
+                // 本地配置
+                layui.data(setter.deployName,{key,value});
+                // 临时配置
+                console.log(key,value)
+                // sessionStorage
+            });
+            layer.msg('本地保存成功')
+            return false; // 阻止默认 form 跳转
+        });
+        // 返回登录
+
+    });
+</script>
